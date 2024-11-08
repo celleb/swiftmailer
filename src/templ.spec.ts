@@ -79,14 +79,14 @@ describe("TemplateParser", () => {
     it("throws an error if the template is invalid", async () => {
       const template = ">{{in/p>";
       await expect(parser.render(template, {})).rejects.toThrow(
-        "Invalid HTML content"
+        new Error("Invalid HTML content before rendering")
       );
     });
 
     it("throws an error if the template has mismatched tags", async () => {
       const template = "<div><p>Text</div></p>";
       await expect(parser.render(template, {})).rejects.toThrow(
-        "Invalid HTML content"
+        new Error("Invalid HTML content before rendering")
       );
     });
 
@@ -115,6 +115,71 @@ describe("TemplateParser", () => {
       const template = "<div/>";
       const result = await parser.render(template, {});
       expect(result).toEqual("<div/>");
+    });
+
+    it("sanitizes rendered data to prevent HTML injection", async () => {
+      const template = "<p>Hello, {{name}}!</p>";
+      const data = { name: "<script>alert('XSS');</script>" };
+      const result = await parser.render(template, data);
+      expect(result).toEqual(
+        "<p>Hello, &lt;script&gt;alert(&#39;XSS&#39;);&lt;/script&gt;!</p>"
+      );
+    });
+
+    it("sanitizes rendered data within loops", async () => {
+      const template = "<ul>{{#each items}}<li>{{this}}</li>{{/each}}</ul>";
+      const data = { items: ["<b>Bold</b>", "<i>Italic</i>"] };
+      const result = await parser.render(template, data);
+      expect(result).toEqual(
+        "<ul><li>&lt;b&gt;Bold&lt;/b&gt;</li><li>&lt;i&gt;Italic&lt;/i&gt;</li></ul>"
+      );
+    });
+
+    it("sanitizes rendered data within conditionals", async () => {
+      const template = "<div>{{#if show}}<p>{{message}}</p>{{/if}}</div>";
+      const data = {
+        show: true,
+        message: "<img src='x' onerror='alert(1)' />",
+      };
+      const result = await parser.render(template, data);
+      expect(result).toEqual(
+        "<div><p>&lt;img src=&#39;x&#39; onerror=&#39;alert(1)&#39; /&gt;</p></div>"
+      );
+    });
+
+    it("renders empty string for undefined variables", async () => {
+      const template = "<p>Hello, {{undefinedVar}}!</p>";
+      const data = {};
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<p>Hello, !</p>");
+    });
+
+    it("it renders scripts and css correctly", async () => {
+      const template = `<html>
+      <head>
+        <script src="{{script}}"></script>
+        <style>body { background-color: red; }</style>
+      </head>
+      <body></body>
+      </html>`;
+      const result = await parser.render(template, {
+        script: "script.js",
+      });
+      expect(result).toMatchInlineSnapshot(`
+        "<html>
+              <head>
+                <script src="script.js"></script>
+                <style>body { background-color: red; }</style>
+              </head>
+              <body></body>
+              </html>"
+      `);
+    });
+
+    it("validate html with doctype correctly", async () => {
+      const template = "<!DOCTYPE html><html><head></head><body></body></html>";
+      const result = await parser.render(template, {});
+      expect(result).toEqual(template);
     });
   });
 });

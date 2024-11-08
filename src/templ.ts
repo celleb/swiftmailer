@@ -71,11 +71,31 @@ export class Templ {
       }
     }
 
-    // Ensure all tags are closed and the content starts and ends with valid tags
     const trimmed = content.trim();
     return (
       tagStack.length === 0 && trimmed.startsWith("<") && trimmed.endsWith(">")
     );
+  }
+
+  private escapeHTML(str: string): string {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  private renderVariables(template: string, data: any): string {
+    return template.replace(/{{([\w.]+)}}/g, (_, key) => {
+      const keys = key.split(".");
+      let value = data;
+      for (const k of keys) {
+        value = value[k];
+        if (value === undefined) return "";
+      }
+      return this.escapeHTML(String(value));
+    });
   }
 
   private async loadTemplate(filePath: string): Promise<string> {
@@ -120,17 +140,5 @@ export class Templ {
         return data[condition] ? content : "";
       }
     );
-  }
-
-  private renderVariables(template: string, data: any): string {
-    return template.replace(/{{([\w.]+)}}/g, (_, key) => {
-      const keys = key.split(".");
-      let value = data;
-      for (const k of keys) {
-        value = value[k];
-        if (value === undefined) return "";
-      }
-      return value;
-    });
   }
 }
