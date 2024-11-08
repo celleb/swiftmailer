@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h1>Welcome, {{name}}!</h1>
+    <p>Thank you for joining us.</p>
+    {{#if isMember}}
+    <p>We're glad to have you as a member!</p>
+    {{/if}}
+    <ul>
+      {{#each items}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+    {{include footer.html}}
+  </body>
+</html>

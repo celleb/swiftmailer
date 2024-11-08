@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+    <script src="{{script}}"></script>
+  </head>
+  <body>
+    <h1 class="name">{{name}}</h1>
+    <img src="image.png" />
+    <br />
+    <div />
+    {{#each items}}
+    <p>{{this}} {{name}}</p>
+    {{/each}} {{#if isAdmin}}
+    <!-- comment -->
+    <p>Admin</p>
+    {{/if}} {{#if includeFooter}} {{include footer.html}} {{/if}}
+    <div>{{include footer.html}}</div>
+  </body>
+</html>

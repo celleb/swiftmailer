@@ -1,6 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
-
+export type TemplRenderOptions = {
+  css?: string;
+};
 export class Templ {
   private templatesDir: string;
   private voidElements: Set<string>;
@@ -25,11 +27,15 @@ export class Templ {
     ]);
   }
 
-  async render<T = any>(template: string, data: T): Promise<string> {
+  async render<T = any>(
+    template: string,
+    data: T,
+    { css }: TemplRenderOptions = {}
+  ): Promise<string> {
     let templateContent: string;
     if (template.endsWith(".html")) {
       const templatePath = path.join(this.templatesDir, template);
-      templateContent = await this.loadTemplate(templatePath);
+      templateContent = await this.loadFile(templatePath);
     } else {
       templateContent = template;
     }
@@ -41,7 +47,13 @@ export class Templ {
     templateContent = await this.processIncludes(templateContent);
     templateContent = this.processLoops(templateContent, data);
     templateContent = this.processConditionals(templateContent, data);
-    const html = this.renderVariables(templateContent, data);
+    let html = this.renderVariables(templateContent, data);
+
+    if (css) {
+      const cssPath = path.join(this.templatesDir, css);
+      const cssContent = await this.loadFile(cssPath);
+      html = this.embedCSS(html, cssContent);
+    }
 
     if (!this.isValidHTML(html)) {
       throw new Error("Invalid HTML content after rendering");
@@ -98,11 +110,11 @@ export class Templ {
     });
   }
 
-  private async loadTemplate(filePath: string): Promise<string> {
+  private async loadFile(filePath: string): Promise<string> {
     try {
       return await fs.readFile(filePath, "utf-8");
     } catch (error) {
-      throw new Error(`Failed to load template ${filePath}`);
+      throw new Error(`Failed to load file ${filePath}`);
     }
   }
 
@@ -112,7 +124,7 @@ export class Templ {
     for (const match of matches) {
       const includePath = match[1].trim();
       const includeFilePath = path.join(this.templatesDir, includePath);
-      const includeContent = await this.loadTemplate(includeFilePath);
+      const includeContent = await this.loadFile(includeFilePath);
       template = template.replace(match[0], includeContent);
     }
     return template;
@@ -140,5 +152,30 @@ export class Templ {
         return data[condition] ? content : "";
       }
     );
+  }
+
+  private embedCSS(html: string, css: string): string {
+    const styleTag = `<style>${css}</style>`;
+    const headMatch = html.match(/<head>/i);
+    let result = html;
+    if (headMatch) {
+      result = html.replace(/<head>/i, `<head>\n${styleTag}\n`);
+    }
+    const bodyMatch = html.match(/<body>/i);
+    if (bodyMatch) {
+      result = result.replace(/<body>/i, `<body>\n${styleTag}\n`);
+    }
+
+    if (bodyMatch && headMatch) {
+      return result;
+    }
+
+    const htmlTagMatch = result.match(/<html[^>]*>/i);
+    if (htmlTagMatch) {
+      return result.replace(/<html[^>]*>/i, `$&\n<head>\n${styleTag}\n</head>`);
+    }
+
+    // If no <head> or <html> tag, prepend the style
+    return `${styleTag}\n${html}`;
   }
 }

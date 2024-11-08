@@ -2,7 +2,7 @@ import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { Templ } from "./templ";
 
-const templatesDir = path.join(__dirname, "templates");
+const templatesDir = path.join(__dirname, "../__tests__/templates");
 
 describe("TemplateParser", () => {
   let parser: Templ;
@@ -53,7 +53,7 @@ describe("TemplateParser", () => {
       const template = "<div>{{#if isMember}}<p>Welcome back!</p>{{/if}}</div>";
       const data = { isMember: true };
       const result = await parser.render(template, data);
-      expect(result).toBe("<div><p>Welcome back!</p></div>");
+      expect(result).toEqual("<div><p>Welcome back!</p></div>");
     });
 
     it("renders and processes conditionals false statement correctly", async () => {
@@ -180,6 +180,143 @@ describe("TemplateParser", () => {
       const template = "<!DOCTYPE html><html><head></head><body></body></html>";
       const result = await parser.render(template, {});
       expect(result).toEqual(template);
+    });
+
+    it("embeds CSS correctly", async () => {
+      const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
+      const css = "styles.css";
+      const data = { name: "Alice" };
+      const result = await parser.render(template, data, { css });
+
+      expect(result).toMatchInlineSnapshot(`
+        "<html>
+        <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+        </head><body>
+        <style>p {
+          color: blue;
+        }
+        </style>
+        <p>Hello, Alice!</p></body></html>"
+      `);
+    });
+
+    it("embeds CSS correctly when the head is present", async () => {
+      const template = `<html>
+      <head>
+        <style>p { color: yellow; }</style>
+        <link rel="stylesheet" href="styles.css">
+      </head>
+      <body><p>Hello, {{name}}!</p></body>
+      </html>`;
+      const css = "styles.css";
+      const data = { name: "Alice" };
+      const result = await parser.render(template, data, { css });
+      expect(result).toMatchInlineSnapshot(`
+        "<html>
+              <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+                <style>p { color: yellow; }</style>
+                <link rel="stylesheet" href="styles.css">
+              </head>
+              <body>
+        <style>p {
+          color: blue;
+        }
+        </style>
+        <p>Hello, Alice!</p></body>
+              </html>"
+      `);
+    });
+
+    it("embeds CSS correctly when there is no head or body", async () => {
+      const template = "<html><p>Hello, {{name}}!</p></html>";
+      const css = "styles.css";
+      const data = { name: "Alice" };
+      const result = await parser.render(template, data, { css });
+      expect(result).toMatchInlineSnapshot(`
+        "<html>
+        <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+        </head><p>Hello, Alice!</p></html>"
+      `);
+    });
+
+    it("embeds CSS correctly when there is not html tag", async () => {
+      const template = "<p>Hello, {{name}}!</p>";
+      const css = "styles.css";
+      const data = { name: "Alice" };
+      const result = await parser.render(template, data, { css });
+      expect(result).toMatchInlineSnapshot(`
+        "<style>p {
+          color: blue;
+        }
+        </style>
+        <p>Hello, Alice!</p>"
+      `);
+    });
+
+    it("renders a full template correctly", async () => {
+      const data = {
+        name: "John Doe",
+        isMember: true,
+        items: ["Item 1", "Item 2"],
+        script: "script.js",
+      };
+      const result = await parser.render("test.html", data, {
+        css: "styles.css",
+      });
+      expect(result).toMatchInlineSnapshot(`
+        "<!DOCTYPE html>
+        <html>
+          <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+            <title>Test</title>
+            <link rel="stylesheet" href="styles.css" />
+            <script src="script.js"></script>
+            <script src="script.js"></script>
+          </head>
+          <body>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+            <h1 class="name">John Doe</h1>
+            <img src="image.png" />
+            <br />
+            <div />
+            
+            <p>Item 1 John Doe</p>
+            
+            <p>Item 2 John Doe</p>
+              
+            <div><footer>
+          <p>
+            Contact us at
+            <a href="mailto:support@swiftmailer.com">support@swiftmailer.com</a>
+          </p>
+          <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
+        </footer>
+        </div>
+          </body>
+        </html>
+        "
+      `);
     });
   });
 });
