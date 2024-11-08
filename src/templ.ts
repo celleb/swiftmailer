@@ -1,7 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
+
 export type TemplRenderOptions = {
-  css?: string;
+  css?: string[];
 };
 export class Templ {
   private templatesDir: string;
@@ -30,7 +31,7 @@ export class Templ {
   async render<T = any>(
     template: string,
     data: T,
-    { css }: TemplRenderOptions = {}
+    { css = [] }: TemplRenderOptions = {}
   ): Promise<string> {
     let templateContent: string;
     if (template.endsWith(".html")) {
@@ -50,9 +51,11 @@ export class Templ {
     let html = this.renderVariables(templateContent, data);
 
     if (css) {
-      const cssPath = path.join(this.templatesDir, css);
-      const cssContent = await this.loadFile(cssPath);
-      html = this.embedCSS(html, cssContent);
+      for (const cssFile of css.reverse()) {
+        const cssPath = path.join(this.templatesDir, cssFile);
+        const cssContent = await this.loadFile(cssPath);
+        html = this.embedCSS(html, cssContent);
+      }
     }
 
     if (!this.isValidHTML(html)) {
@@ -175,7 +178,6 @@ export class Templ {
       return result.replace(/<html[^>]*>/i, `$&\n<head>\n${styleTag}\n</head>`);
     }
 
-    // If no <head> or <html> tag, prepend the style
     return `${styleTag}\n${html}`;
   }
 }

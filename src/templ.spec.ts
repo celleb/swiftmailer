@@ -184,7 +184,7 @@ describe("TemplateParser", () => {
 
     it("embeds CSS correctly", async () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
-      const css = "styles.css";
+      const css = ["styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
 
@@ -212,7 +212,7 @@ describe("TemplateParser", () => {
       </head>
       <body><p>Hello, {{name}}!</p></body>
       </html>`;
-      const css = "styles.css";
+      const css = ["styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
       expect(result).toMatchInlineSnapshot(`
@@ -238,7 +238,7 @@ describe("TemplateParser", () => {
 
     it("embeds CSS correctly when there is no head or body", async () => {
       const template = "<html><p>Hello, {{name}}!</p></html>";
-      const css = "styles.css";
+      const css = ["styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
       expect(result).toMatchInlineSnapshot(`
@@ -254,7 +254,7 @@ describe("TemplateParser", () => {
 
     it("embeds CSS correctly when there is not html tag", async () => {
       const template = "<p>Hello, {{name}}!</p>";
-      const css = "styles.css";
+      const css = ["styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
       expect(result).toMatchInlineSnapshot(`
@@ -274,7 +274,7 @@ describe("TemplateParser", () => {
         script: "script.js",
       };
       const result = await parser.render("test.html", data, {
-        css: "styles.css",
+        css: ["styles.css"],
       });
       expect(result).toMatchInlineSnapshot(`
         "<!DOCTYPE html>
@@ -316,6 +316,37 @@ describe("TemplateParser", () => {
           </body>
         </html>
         "
+      `);
+    });
+
+    it("renders multiple css files correctly", async () => {
+      const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
+      const css = ["styles.css", "other.css"];
+      const data = { name: "Alice" };
+      const result = await parser.render(template, data, { css });
+      expect(result).toMatchInlineSnapshot(`
+        "<html>
+        <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+        <style>.green {
+          color: green;
+        }
+        </style>
+        </head><body>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+        <style>.green {
+          color: green;
+        }
+        </style>
+        <p>Hello, Alice!</p></body></html>"
       `);
     });
   });
