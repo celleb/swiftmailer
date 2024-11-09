@@ -1,3 +1,3 @@
-import { EmailService } from "./email.service";
+import { SwiftMailer } from "./swift-mailer";
 
-export const swiftMailer = new EmailService();
+export const swiftMailer = new SwiftMailer();

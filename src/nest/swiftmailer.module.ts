@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-import { EmailService } from "../email.service";
+import { SwiftMailer } from "../swift-mailer";
 
 @Module({
-  providers: [EmailService],
-  exports: [EmailService],
+  providers: [SwiftMailer],
+  exports: [SwiftMailer],
 })
 export class SwiftMailerModule {}
