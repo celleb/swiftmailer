@@ -337,6 +337,44 @@ describe("TemplateParser", () => {
       );
     });
 
+    it("correctly renders if condition in a self closing tag, when condition is falsey", async () => {
+      const template = "<div><img src='image.png' *if='src' /></div>";
+      const result = await parser.render(template, {});
+      expect(result).toEqual("<div></div>");
+    });
+
+    it("correctly renders if condition in a self closing tag, when condition is truthy", async () => {
+      const template = "<div><img src='image.png' *if='src' /></div>";
+      const result = await parser.render(template, { src: "image.png" });
+      expect(result).toEqual("<div><img src='image.png' /></div>");
+    });
+
+    it("correctly render when if condition comes after attributes", async () => {
+      const template =
+        "<div><img src='image.png' *if='src' class='test' /></div>";
+      const result = await parser.render(template, { src: "image.png" });
+      expect(result).toEqual("<div><img src='image.png' class='test' /></div>");
+    });
+
+    it("correctly renders when *for comes after attributes", async () => {
+      const template = "<div><p *for='item of items'>{{item}}</p></div>";
+      const result = await parser.render(template, {
+        items: ["Item 1", "Item 2"],
+      });
+      expect(result).toEqual("<div><p>Item 1</p><p>Item 2</p></div>");
+    });
+
+    it("correctly renders when *for comes is used in a self closing tag", async () => {
+      const template =
+        "<div><img src='image.png' *for='item of items' /></div>";
+      const result = await parser.render(template, {
+        items: ["Item 1", "Item 2"],
+      });
+      expect(result).toEqual(
+        "<div><img src='image.png' /><img src='image.png' /></div>"
+      );
+    });
+
     it("correctly renders multiple css files", async () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
       const css = ["styles.css", "other.css"];
@@ -496,6 +534,135 @@ describe("TemplateParser", () => {
         </footer>
 
             </div>
+          </body>
+        </html>
+        "
+      `);
+    });
+  });
+
+  describe("correctly renders the email-confirmation.html template", () => {
+    it("correctly renders the email-confirmation.html template", async () => {
+      const data = {
+        companyName: "Logic++",
+        name: "Celleb",
+        logo: "logo.png",
+        baseUri: "https://static.mrcelleb.com/swiftmailer/",
+      };
+      const parser = new Templ();
+      const result = await parser.render("email-confirmation.html", data);
+      expect(result).toMatchInlineSnapshot(`
+        "<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <base href="https://static.mrcelleb.com/swiftmailer/" />
+            <title>Confirm your email address</title>
+          </head>
+          <body
+            style="
+              margin: 0;
+              padding: 0;
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+            "
+          >
+            <table
+              width="100%"
+              border="0"
+              cellspacing="0"
+              cellpadding="0"
+              style="
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <tr>
+                <td
+                  style="
+                    background-color: #333;
+                    color: #ffffff;
+                    border-radius: 8px 8px 0 0;
+                    padding: 20px;
+                  "
+                >
+                  <table cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="vertical-align: middle">
+                        <img
+                          src="logo.png"
+                          alt="Logic++"
+                          style="width: 30px; display: block"
+                        />
+                      </td>
+                      <td style="vertical-align: middle">
+                        <h1 style="margin: 0; margin-left: 15px">Logic++</h1>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px">
+                  <p style="margin: 0 0 20px">
+                    Hi <span style="font-weight: bold">Celleb</span>,
+                  </p>
+                  <p style="margin: 0 0 20px">
+                    
+                    <span>
+                      Thank you for signing up! Please confirm your email address by
+                      clicking the button below:
+                    </span>
+                  </p>
+                  <p style="text-align: center">
+                    <a
+                      href=""
+                      style="
+                        display: inline-block;
+                        padding: 10px 20px;
+                        color: #ffffff;
+                        background-color: #28a745;
+                        text-decoration: none;
+                        border-radius: 5px;
+                      "
+                      >Confirm Email</a
+                    >
+                  </p>
+                  <p style="margin: 20px 0 0; text-align: center">
+                    Or copy and paste this link into your browser: <br />
+                    <a href="" style="color: #007bff"
+                      ></a
+                    >
+                  </p>
+                  <p style="margin: 20px 0 0">
+                    
+                    <span>
+                      If you did not sign up for this account, you can ignore this
+                      email.
+                    </span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    padding: 20px;
+                    text-align: center;
+                    background-color: #f4f4f4;
+                    border-radius: 0 0 8px 8px;
+                  "
+                >
+                  
+                  <span>
+                    <p style="margin: 0">powered by swiftmailer</p>
+                  </span>
+                </td>
+              </tr>
+            </table>
           </body>
         </html>
         "

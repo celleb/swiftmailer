@@ -10,7 +10,8 @@ export class Templ {
   private voidElements: Set<string>;
   private uniqueIdCounter = 0;
 
-  private readonly ifPattern = /<(\w+)\s+\*if=['"](!?[\w._]+)['"][^>]*>/;
+  private readonly ifPattern =
+    /<(\w+)(?:\s+[^>]*?)?\s+\*if=['"](!?[\w._]+)['"][^>]*>/;
   private readonly forPattern =
     /<(\w+)(?:\s+[^>]*?)?\s+\*for=['"]([\w]+)\s+of\s+([\w.]+)['"][^>]*>/;
 
@@ -203,16 +204,22 @@ export class Templ {
     while ((forMatch = template.match(this.forPattern)) !== null) {
       const [fullMatch, tagName, item, arrayName] = forMatch;
       const startTagEnd = forMatch.index! + fullMatch.length;
-      const endTagIndex = this.findMatchingClosingTag(
-        template,
-        startTagEnd,
-        tagName
-      );
+      const isSelfClosing = fullMatch.endsWith("/>");
 
-      if (endTagIndex === -1) {
-        throw new Error(
-          `No closing tag found for <${tagName} *for="${item}" of "${arrayName}">`
+      let endTagIndex;
+      if (isSelfClosing) {
+        endTagIndex = startTagEnd; // For self-closing tags, the end is the start
+      } else {
+        endTagIndex = this.findMatchingClosingTag(
+          template,
+          startTagEnd,
+          tagName
         );
+        if (endTagIndex === -1) {
+          throw new Error(
+            `No closing tag found for <${tagName} *for="${item}" of "${arrayName}">`
+          );
+        }
       }
 
       const array = this.getValueFromData(expandedVariables, arrayName);
@@ -264,16 +271,22 @@ export class Templ {
     while ((ifMatch = template.match(this.ifPattern)) !== null) {
       const [fullMatch, tagName, condition] = ifMatch;
       const startTagEnd = ifMatch.index! + fullMatch.length;
-      const endTagIndex = this.findMatchingClosingTag(
-        template,
-        startTagEnd,
-        tagName
-      );
+      const isSelfClosing = fullMatch.endsWith("/>");
 
-      if (endTagIndex === -1) {
-        throw new Error(
-          `No closing tag found for <${tagName} *if="${condition}">`
+      let endTagIndex;
+      if (isSelfClosing) {
+        endTagIndex = startTagEnd; // For self-closing tags, the end is the start
+      } else {
+        endTagIndex = this.findMatchingClosingTag(
+          template,
+          startTagEnd,
+          tagName
         );
+        if (endTagIndex === -1) {
+          throw new Error(
+            `No closing tag found for <${tagName} *if="${condition}">`
+          );
+        }
       }
 
       const negate = condition.startsWith("!");
