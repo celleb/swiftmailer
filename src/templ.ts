@@ -6,7 +6,7 @@ export type TemplRenderOptions = {
 };
 
 export class Templ {
-  private templatesDir: string;
+  private templatesDir = path.join(__dirname, "./templates");
   private voidElements: Set<string>;
   private uniqueIdCounter = 0;
 
@@ -16,8 +16,10 @@ export class Templ {
 
   private readonly whileTimeoutRuns = 100000;
 
-  constructor(templatesDir: string) {
-    this.templatesDir = templatesDir;
+  constructor(templatesDir?: string) {
+    if (templatesDir) {
+      this.templatesDir = templatesDir;
+    }
     this.voidElements = new Set([
       "area",
       "base",
