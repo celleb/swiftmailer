@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="{{baseUri}}" *if="baseUri" />
+    <title>Confirm your email address</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    "
+  >
+    <table
+      width="100%"
+      border="0"
+      cellspacing="0"
+      cellpadding="0"
+      style="
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <tr>
+        <td
+          style="
+            background-color: #333;
+            color: #ffffff;
+            border-radius: 8px 8px 0 0;
+            padding: 20px;
+          "
+        >
+          <table cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="vertical-align: middle" if="logo">
+                <img
+                  src="{{logo}}"
+                  alt="{{companyName}}"
+                  style="width: 30px; display: block"
+                />
+              </td>
+              <td style="vertical-align: middle">
+                <h1 style="margin: 0; margin-left: 15px">{{companyName}}</h1>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 20px">
+          <p style="margin: 0 0 20px">
+            Hi <span style="font-weight: bold" if="name">{{name}}</span>,
+          </p>
+          <p style="margin: 0 0 20px">
+            <span if="intro">{{intro}}</span>
+            <span if="!intro">
+              Thank you for signing up! Please confirm your email address by
+              clicking the button below:
+            </span>
+          </p>
+          <p style="text-align: center">
+            <a
+              href="{{confirmationLink}}"
+              style="
+                display: inline-block;
+                padding: 10px 20px;
+                color: #ffffff;
+                background-color: #28a745;
+                text-decoration: none;
+                border-radius: 5px;
+              "
+              >Confirm Email</a
+            >
+          </p>
+          <p style="margin: 20px 0 0; text-align: center">
+            Or copy and paste this link into your browser: <br />
+            <a href="{{confirmationLink}}" style="color: #007bff"
+              >{{confirmationLink}}</a
+            >
+          </p>
+          <p style="margin: 20px 0 0">
+            <span if="note"> {{note}} </span>
+            <span if="!note">
+              If you did not sign up for this account, you can ignore this
+              email.
+            </span>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td
+          style="
+            padding: 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+            border-radius: 0 0 8px 8px;
+          "
+        >
+          <span if="footer"> {{footer}} </span>
+          <span if="!footer">
+            <p style="margin: 0">powered by swiftmailer</p>
+          </span>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
