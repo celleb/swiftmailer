@@ -31,7 +31,7 @@ const data = {
 };
 
 const htmlContent = await parser.render("styles-embedding.html", data, {
-  css: "styles.css",
+  css: ["styles.css"],
 });
 console.log(htmlContent);
 ```
@@ -40,7 +40,7 @@ console.log(htmlContent);
 
 ### Variables
 
-Replace placeholders with dynamic data using `{{variableName}}`.
+Use `{{variableName}}` to output variable values:
 
 ```html
 <p>Hello, {{name}}!</p>
@@ -48,40 +48,32 @@ Replace placeholders with dynamic data using `{{variableName}}`.
 
 ### Loops
 
-Use `{{#each arrayName}}...{{/each}}` to iterate over an array.
-
-**Example**:
+Use the `*for` attribute for iteration:
 
 ```html
 <ul>
-  {{#each items}}
-  <li>{{this}}</li>
-  {{/each}}
+  <li *for="item of items">{{item.name}}</li>
 </ul>
 ```
 
 ### Conditionals
 
-Render content based on boolean conditions using `{{#if condition}}...{{/if}}`.
-
-**Example**:
+Use the `*if` attribute for conditional rendering:
 
 ```html
-{{#if isMember}}
-<p>Welcome back!</p>
-{{/if}}
+<div>
+  <p *if="isMember">Welcome back!</p>
+</div>
 ```
 
 ### Includes
 
-Embed another HTML file using `{{include fileName.html}}`.
-
-**Example**:
+Use the self-closing `<include/>` tag to embed other templates:
 
 ```html
-{{include header.html}}
-<p>Welcome to our service!</p>
-{{include footer.html}}
+<include src="header.html" />
+<p>Main content here</p>
+<include src="footer.html" />
 ```
 
 ## CSS Embedding
@@ -158,15 +150,13 @@ Place your HTML templates in the `src/templates` directory. Ensure that included
 **`welcome.html`**:
 
 ```html
-{{include header.html}}
+<include src="header.html" />
 <h1>Welcome, {{name}}!</h1>
 <p>Thank you for joining us.</p>
 <ul>
-  {{#each items}}
-  <li>{{this}}</li>
-  {{/each}}
+  <li *for="item of items">{{item}}</li>
 </ul>
-{{include footer.html}}
+<include src="footer.html" />
 ```
 
 ## Additional Notes

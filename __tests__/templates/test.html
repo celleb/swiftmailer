@@ -4,19 +4,83 @@
     <title>Test</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js"></script>
+    <!-- variables in attributes-->
     <script src="{{script}}"></script>
   </head>
   <body>
-    <h1 class="name">{{name}}</h1>
+    <h1>This is a test template to test the templating engine</h1>
+    <h2>Include tag</h2>
+    <include src="header.html" />
+    <h2>Variables in text</h2>
+    <h2>{{city}} is a small town in {{country}}</h2>
+    <h2>Self closing tags</h2>
     <img src="image.png" />
     <br />
     <div />
-    {{#each items}}
-    <p>{{this}} {{name}}</p>
-    {{/each}} {{#if isAdmin}}
-    <!-- comment -->
-    <p>Admin</p>
-    {{/if}} {{#if includeFooter}} {{include footer.html}} {{/if}}
-    <div>{{include footer.html}}</div>
+    <h2>For loop</h2>
+    <h2>
+      For loop with variables in control tag attribute, if nested in a loop
+    </h2>
+    <ul>
+      <li *for="site of sites" class="red" id="{{site}}">
+        {{site}}
+        <span *if="user.isMember" class="blue">{{site}} {{city}}</span>
+      </li>
+    </ul>
+    <h2>Truthy if tag: to be rendered</h2>
+    <p *if="isFavorite">Town {{city}} is my favorite town</p>
+    <h2>Falsy if tag: not to be rendered</h2>
+    <p *if="notFavorite">Town {{city}} is not my favorite town</p>
+    <h2>Include nested in an if tag: not to be rendered</h2>
+    <p *if="isFalse">
+      <include src="footer.html" />
+    </p>
+    <h2>For loop with nested loop control tag</h2>
+    <div *for="contributor of contributors">
+      <div>{{contributor}}</div>
+    </div>
+    <h2>Object variable</h2>
+    <div>{{user.name}}</div>
+    <h2>Object variable in a if tag</h2>
+    <p *if="user.isAdmin">Admin</p>
+    <h2>Object variable in a for loop text</h2>
+    <ul>
+      <li *for="project of projects">{{project.name}}</li>
+    </ul>
+    <h2>Loop from object property</h2>
+    <ul>
+      <li *for="role of user.roles">{{role}}</li>
+    </ul>
+    <h2>Nested loop</h2>
+    <!-- <ul>
+      <li *for="project of projects">
+        <div *for="role of project.roles">{{role}}</div>
+      </li>
+    </ul> -->
+    <ul>
+      <li *for="project of projects">
+        <div *for="role of project.roles">{{role}}</div>
+      </li>
+    </ul>
+    <h2>Another nested loop</h2>
+    <ul>
+      <li *for="group of groups">
+        <div *for="name of group">{{name}}</div>
+      </li>
+    </ul>
+    <h2>Loop nested inside an if tag</h2>
+    <ul *if="projects.length">
+      <li *for="project of projects">{{project.name}}</li>
+    </ul>
+    <h2>Loop nested inside an if tag with falsy condition</h2>
+    <ul *if="isFalse">
+      <li *for="project of projects">{{project.name}}</li>
+    </ul>
+    <h2>Loop with an if tag</h2>
+    <div *if="projects.length" *for="project of projects">{{project.name}}</div>
+    <h2>Nested include</h2>
+    <div>
+      <include src="footer.html" />
+    </div>
   </body>
 </html>

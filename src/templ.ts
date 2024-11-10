@@ -4,9 +4,17 @@ import path from "path";
 export type TemplRenderOptions = {
   css?: string[];
 };
+
 export class Templ {
   private templatesDir: string;
   private voidElements: Set<string>;
+  private uniqueIdCounter = 0;
+
+  private readonly ifPattern = /<(\w+)\s+\*if=['"]([\w.\_]+)['"][^>]*>/;
+  private readonly forPattern =
+    /<(\w+)(?:\s+[^>]*?)?\s+\*for=['"]([\w]+)\s+of\s+([\w.]+)['"][^>]*>/;
+
+  private readonly whileTimeoutRuns = 100000;
 
   constructor(templatesDir: string) {
     this.templatesDir = templatesDir;
@@ -33,6 +41,7 @@ export class Templ {
     data: T,
     { css = [] }: TemplRenderOptions = {}
   ): Promise<string> {
+    this.uniqueIdCounter = 0;
     let templateContent: string;
     if (template.endsWith(".html")) {
       const templatePath = path.join(this.templatesDir, template);
@@ -41,28 +50,43 @@ export class Templ {
       templateContent = template;
     }
 
-    if (!this.isValidHTML(templateContent)) {
+    const { template: placeholderTemplate, comments } =
+      this.replaceCommentsWithPlaceholders(templateContent);
+
+    if (!this.isValidHTML(placeholderTemplate)) {
       throw new Error("Invalid HTML content before rendering");
     }
 
-    templateContent = await this.processIncludes(templateContent);
-    templateContent = this.processLoops(templateContent, data);
-    templateContent = this.processConditionals(templateContent, data);
-    let html = this.renderVariables(templateContent, data);
+    let processedTemplate = await this.processIncludes(placeholderTemplate);
+    const { html: loopedTemplate, expandedVariables } = this.processLoops(
+      processedTemplate,
+      data
+    );
+    const variables = {
+      ...data,
+      ...expandedVariables,
+    };
+    processedTemplate = this.processConditionals(loopedTemplate, variables);
+    let html = this.renderVariables(processedTemplate, variables);
 
-    if (css) {
-      for (const cssFile of css.reverse()) {
-        const cssPath = path.join(this.templatesDir, cssFile);
-        const cssContent = await this.loadFile(cssPath);
-        html = this.embedCSS(html, cssContent);
-      }
+    for (const cssFile of css.reverse()) {
+      const cssPath = path.join(this.templatesDir, cssFile);
+      const cssContent = await this.loadFile(cssPath);
+      html = this.embedCSS(html, cssContent);
     }
 
     if (!this.isValidHTML(html)) {
       throw new Error("Invalid HTML content after rendering");
     }
 
-    return html;
+    return this.restoreComments(html, comments);
+  }
+
+  validateHTML(content: string): string {
+    if (!this.isValidHTML(content)) {
+      throw new Error("Invalid HTML content");
+    }
+    return content;
   }
 
   private isValidHTML(content: string): boolean {
@@ -77,7 +101,7 @@ export class Templ {
 
       if (isClosingTag) {
         if (tagStack.length === 0 || tagStack.pop() !== tag) {
-          return false; // Mismatched or unbalanced tag
+          return false;
         }
       } else if (isSelfClosing || this.voidElements.has(tag)) {
         // Self-closing tag or void element, no action needed
@@ -102,14 +126,18 @@ export class Templ {
   }
 
   private renderVariables(template: string, data: any): string {
-    return template.replace(/{{([\w.]+)}}/g, (_, key) => {
-      const keys = key.split(".");
+    return template.replace(/{{([^}]+)}}/g, (_, key) => {
+      const trimmedKey = key.trim();
+      const keys = trimmedKey.split(".");
       let value = data;
       for (const k of keys) {
+        if (value == null) {
+          value = "";
+          break;
+        }
         value = value[k];
-        if (value === undefined) return "";
       }
-      return this.escapeHTML(String(value));
+      return this.escapeHTML(String(value ?? ""));
     });
   }
 
@@ -122,39 +150,148 @@ export class Templ {
   }
 
   private async processIncludes(template: string): Promise<string> {
-    const includePattern = /{{include\s+(.+?)}}/g;
-    const matches = template.matchAll(includePattern);
+    const includePattern = /<include\s+src=['"]([^'"]+)['"]\s*\/>/g;
+    const matches = Array.from(template.matchAll(includePattern));
+    let result = template;
+
     for (const match of matches) {
       const includePath = match[1].trim();
       const includeFilePath = path.join(this.templatesDir, includePath);
       const includeContent = await this.loadFile(includeFilePath);
-      template = template.replace(match[0], includeContent);
+      result = result.replace(match[0], includeContent);
     }
-    return template;
+
+    return result;
   }
 
-  private processLoops(template: string, data: any): string {
-    return template.replace(
-      /{{#each\s+(\w+)}}([\s\S]+?){{\/each}}/g,
-      (_, arrayName, loopContent) => {
-        const array = data[arrayName];
-        if (!Array.isArray(array)) return "";
-        return array
-          .map((item) =>
-            this.renderVariables(loopContent, { ...data, this: item })
-          )
-          .join("");
+  private generateUniqueId(name: string): string {
+    return `__loop_var_${name}__${this.uniqueIdCounter++}__`;
+  }
+
+  private findMatchingClosingTag(
+    template: string,
+    startIndex: number,
+    tagName: string
+  ): number {
+    const tagPattern = new RegExp(`<${tagName}\\b[^>]*>|</${tagName}>`, "g");
+    tagPattern.lastIndex = startIndex;
+    let match: RegExpExecArray | null;
+    let depth = 0;
+
+    while ((match = tagPattern.exec(template)) !== null) {
+      if (match[0].startsWith(`</`)) {
+        depth--;
+        if (depth === -1) {
+          return match.index + match[0].length;
+        }
+      } else {
+        depth++;
       }
-    );
+    }
+
+    return -1;
+  }
+
+  private processLoops(
+    template: string,
+    data: any
+  ): { html: string; expandedVariables: Record<string, any> } {
+    const expandedVariables: Record<string, any> = { ...data };
+    let forMatch: RegExpMatchArray | null;
+    while ((forMatch = template.match(this.forPattern)) !== null) {
+      const [fullMatch, tagName, item, arrayName] = forMatch;
+      const startTagEnd = forMatch.index! + fullMatch.length;
+      const endTagIndex = this.findMatchingClosingTag(
+        template,
+        startTagEnd,
+        tagName
+      );
+
+      if (endTagIndex === -1) {
+        throw new Error(
+          `No closing tag found for <${tagName} *for="${item}" of "${arrayName}">`
+        );
+      }
+
+      const array = this.getValueFromData(expandedVariables, arrayName);
+
+      if (!Array.isArray(array)) {
+        throw new TypeError(
+          `Expected array for *for="${item} of ${arrayName}", got ${typeof array}`
+        );
+      }
+
+      const contentItem = template.slice(forMatch.index!, endTagIndex);
+
+      const loopContent = array
+        .map((itemValue: any) => {
+          const placeholder = this.generateUniqueId(item);
+          expandedVariables[placeholder] = itemValue;
+
+          return contentItem
+            .replace(
+              new RegExp(`{{\\s*${item}(\\.[^}]+)?\\s*}}`, "g"),
+              `{{${placeholder}$1}}`
+            )
+            .replace(
+              new RegExp(`\\*if=['"]${item}(\\.[^'"]+)?['"]`, "g"),
+              `*if="${placeholder}$1"`
+            )
+            .replace(
+              new RegExp(
+                `\\*for=['"]([^'"]+)\\s+of\\s+${item}(\\.[^'"]+)?['"]`,
+                "g"
+              ),
+              `*for="$1 of ${placeholder}$2"`
+            )
+            .replace(/\s*\*for=['"][^'"]+['"]/, "");
+        })
+        .join("");
+
+      template =
+        template.slice(0, forMatch.index!) +
+        loopContent +
+        template.slice(endTagIndex);
+    }
+
+    return { html: template, expandedVariables };
   }
 
   private processConditionals(template: string, data: any): string {
-    return template.replace(
-      /{{#if\s+(\w+)}}([\s\S]+?){{\/if}}/g,
-      (_, condition, content) => {
-        return data[condition] ? content : "";
+    let ifMatch: RegExpMatchArray | null;
+    while ((ifMatch = template.match(this.ifPattern)) !== null) {
+      const [fullMatch, tagName, condition] = ifMatch;
+      const startTagEnd = ifMatch.index! + fullMatch.length;
+      const endTagIndex = this.findMatchingClosingTag(
+        template,
+        startTagEnd,
+        tagName
+      );
+
+      if (endTagIndex === -1) {
+        throw new Error(
+          `No closing tag found for <${tagName} *if="${condition}">`
+        );
       }
-    );
+
+      const value = this.getValueFromData(data, condition);
+
+      if (!value) {
+        template =
+          template.slice(0, ifMatch.index!) + template.slice(endTagIndex);
+      } else {
+        template = template.replace(
+          fullMatch,
+          fullMatch.replace(/\s*\*if=['"][^'"]+['"]/, "")
+        );
+      }
+    }
+
+    return template;
+  }
+
+  private getValueFromData(data: any, path: string): any {
+    return path.split(".").reduce((acc, part) => acc && acc[part], data);
   }
 
   private embedCSS(html: string, css: string): string {
@@ -179,5 +316,27 @@ export class Templ {
     }
 
     return `${styleTag}\n${html}`;
+  }
+
+  private replaceCommentsWithPlaceholders(template: string): {
+    template: string;
+    comments: string[];
+  } {
+    const comments: string[] = [];
+    const placeholderTemplate = template.replace(
+      /<!--[\s\S]*?-->/g,
+      (match) => {
+        comments.push(match);
+        return `<!--COMMENT_PLACEHOLDER_${comments.length - 1}-->`;
+      }
+    );
+    return { template: placeholderTemplate, comments };
+  }
+
+  private restoreComments(template: string, comments: string[]): string {
+    return template.replace(
+      /<!--COMMENT_PLACEHOLDER_(\d+)-->/g,
+      (_, index) => comments[parseInt(index, 10)]
+    );
   }
 }

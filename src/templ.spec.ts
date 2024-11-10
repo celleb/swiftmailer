@@ -12,58 +12,46 @@ describe("TemplateParser", () => {
   });
 
   describe("render", () => {
-    it("render variables correctly", async () => {
+    it("correctly renders variables", async () => {
       const template = "<p>Hello, {{name}}!</p>";
       const data = { name: "John" };
       const result = await parser.render(template, data);
       expect(result).toEqual("<p>Hello, John!</p>");
     });
 
-    it("process includes correctly", async () => {
-      const template = "<div><p>Content</p>{{include footer.html}}</div>";
+    it("correctly renders loops", async () => {
+      const template = '<ul><li *for="item of items">{{item.name}}</li></ul>';
+      const data = { items: [{ name: "Item 1" }, { name: "Item 2" }] };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<ul><li>Item 1</li><li>Item 2</li></ul>");
+    });
+
+    it("correctly renders process array loop with scalars", async () => {
+      const template = '<ul><li *for="item of items">{{item}}</li></ul>';
+      const data = { items: ["Item 1", "Item 2"] };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<ul><li>Item 1</li><li>Item 2</li></ul>");
+    });
+
+    it("correctly renders conditionals", async () => {
+      const template = '<div><p *if="isMember">Welcome back!</p></div>';
+      const data = { isMember: true };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<div><p>Welcome back!</p></div>");
+    });
+
+    it("correctly processes includes", async () => {
+      const template = '<div><p>Content</p><include src="footer.html"/></div>';
       const result = await parser.render(template, {});
       expect(result).toMatchInlineSnapshot(`
         "<div><p>Content</p><footer>
-          <p>
-            Contact us at
-            <a href="mailto:support@swiftmailer.com">support@swiftmailer.com</a>
-          </p>
           <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
         </footer>
         </div>"
       `);
     });
 
-    it("renders and processes loops correctly", async () => {
-      const template =
-        "<ul>{{#each items}}<li>{{this.name}}</li>{{/each}}</ul>";
-      const data = { items: [{ name: "Item 1" }, { name: "Item 2" }] };
-      const result = await parser.render(template, data);
-      expect(result).toEqual("<ul><li>Item 1</li><li>Item 2</li></ul>");
-    });
-
-    it("renders process array loop with scalars correctly", async () => {
-      const template = "<ul>{{#each items}}<li>{{this}}</li>{{/each}}</ul>";
-      const data = { items: ["Item 1", "Item 2"] };
-      const result = await parser.render(template, data);
-      expect(result).toEqual("<ul><li>Item 1</li><li>Item 2</li></ul>");
-    });
-
-    it("renders and processes conditionals true statement correctly", async () => {
-      const template = "<div>{{#if isMember}}<p>Welcome back!</p>{{/if}}</div>";
-      const data = { isMember: true };
-      const result = await parser.render(template, data);
-      expect(result).toEqual("<div><p>Welcome back!</p></div>");
-    });
-
-    it("renders and processes conditionals false statement correctly", async () => {
-      const template = "<div>{{#if isMember}}<p>Welcome back!</p>{{/if}}</div>";
-      const data = { isMember: false };
-      const result = await parser.render(template, data);
-      expect(result).toEqual("<div></div>");
-    });
-
-    it("renders a full template correctly", async () => {
+    it("correctly renders a full template", async () => {
       const data = {
         name: "John Doe",
         isMember: true,
@@ -127,7 +115,7 @@ describe("TemplateParser", () => {
     });
 
     it("sanitizes rendered data within loops", async () => {
-      const template = "<ul>{{#each items}}<li>{{this}}</li>{{/each}}</ul>";
+      const template = "<ul><li *for='item of items'>{{item}}</li></ul>";
       const data = { items: ["<b>Bold</b>", "<i>Italic</i>"] };
       const result = await parser.render(template, data);
       expect(result).toEqual(
@@ -136,7 +124,7 @@ describe("TemplateParser", () => {
     });
 
     it("sanitizes rendered data within conditionals", async () => {
-      const template = "<div>{{#if show}}<p>{{message}}</p>{{/if}}</div>";
+      const template = "<div><p *if='show'>{{message}}</p></div>";
       const data = {
         show: true,
         message: "<img src='x' onerror='alert(1)' />",
@@ -154,7 +142,7 @@ describe("TemplateParser", () => {
       expect(result).toEqual("<p>Hello, !</p>");
     });
 
-    it("it renders scripts and css correctly", async () => {
+    it("correctly renders scripts and css", async () => {
       const template = `<html>
       <head>
         <script src="{{script}}"></script>
@@ -176,13 +164,13 @@ describe("TemplateParser", () => {
       `);
     });
 
-    it("validate html with doctype correctly", async () => {
+    it("correctly validates html with doctype", async () => {
       const template = "<!DOCTYPE html><html><head></head><body></body></html>";
       const result = await parser.render(template, {});
       expect(result).toEqual(template);
     });
 
-    it("embeds CSS correctly", async () => {
+    it("correctly embeds CSS", async () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
       const css = ["styles.css"];
       const data = { name: "Alice" };
@@ -204,7 +192,7 @@ describe("TemplateParser", () => {
       `);
     });
 
-    it("embeds CSS correctly when the head is present", async () => {
+    it("correctly embeds CSS when the head is present", async () => {
       const template = `<html>
       <head>
         <style>p { color: yellow; }</style>
@@ -236,7 +224,39 @@ describe("TemplateParser", () => {
       `);
     });
 
-    it("embeds CSS correctly when there is no head or body", async () => {
+    it("correctly renders conditionals in loops", async () => {
+      const template =
+        "<p *for='item of items'><span *if='item'>Test {{item}}</span></p>";
+      const data = { items: ["Item 1", "Item 2"] };
+      const result = await parser.render(template, data);
+      expect(result).toEqual(
+        "<p><span>Test Item 1</span></p><p><span>Test Item 2</span></p>"
+      );
+    });
+
+    it("correctly renders conditionals in loops with objects variables", async () => {
+      const template =
+        "<p *for='item of items'><span *if='item.render'>Test {{item.name}}</span></p>";
+      const data = {
+        items: [
+          { name: "Item 1", render: true },
+          { name: "Item 2", render: false },
+        ],
+      };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<p><span>Test Item 1</span></p><p></p>");
+    });
+
+    it("correctly renders conditionals with objects in loops", async () => {
+      const template = "<div><p *if='item.render'>Test {{item.name}}</p></div>";
+      const data = {
+        item: { name: "Item 1", render: true },
+      };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<div><p>Test Item 1</p></div>");
+    });
+
+    it("correctly embeds CSS when there is no head or body", async () => {
       const template = "<html><p>Hello, {{name}}!</p></html>";
       const css = ["styles.css"];
       const data = { name: "Alice" };
@@ -252,7 +272,36 @@ describe("TemplateParser", () => {
       `);
     });
 
-    it("embeds CSS correctly when there is not html tag", async () => {
+    it("correctly renders if conditionals have children with similar tags", async () => {
+      const template = `
+      <div>
+      <div *if='data' class='test' id='{{id}}'>
+        <div>
+          <div>{{data}}</div>
+        </div>
+      </div>
+      </div>`;
+      const data = { data: false, id: "test" };
+      const result = await parser.render(template, data);
+      expect(result).toMatchInlineSnapshot(`
+        "
+              <div>
+              
+              </div>"
+      `);
+    });
+
+    it("correctly renders if loops have children with similar tags", async () => {
+      const template =
+        "<div *for='item of items' class='red' id='{{item}}'><div>{{item}}</div></div>";
+      const data = { items: ["Item 1", "Item 2"] };
+      const result = await parser.render(template, data);
+      expect(result).toEqual(
+        "<div class='red' id='Item 1'><div>Item 1</div></div><div class='red' id='Item 2'><div>Item 2</div></div>"
+      );
+    });
+
+    it("correctly embeds CSS when there is not html tag", async () => {
       const template = "<p>Hello, {{name}}!</p>";
       const css = ["styles.css"];
       const data = { name: "Alice" };
@@ -266,60 +315,15 @@ describe("TemplateParser", () => {
       `);
     });
 
-    it("renders a full template correctly", async () => {
-      const data = {
-        name: "John Doe",
-        isMember: true,
-        items: ["Item 1", "Item 2"],
-        script: "script.js",
-      };
-      const result = await parser.render("test.html", data, {
-        css: ["styles.css"],
-      });
-      expect(result).toMatchInlineSnapshot(`
-        "<!DOCTYPE html>
-        <html>
-          <head>
-        <style>p {
-          color: blue;
-        }
-        </style>
-
-            <title>Test</title>
-            <link rel="stylesheet" href="styles.css" />
-            <script src="script.js"></script>
-            <script src="script.js"></script>
-          </head>
-          <body>
-        <style>p {
-          color: blue;
-        }
-        </style>
-
-            <h1 class="name">John Doe</h1>
-            <img src="image.png" />
-            <br />
-            <div />
-            
-            <p>Item 1 John Doe</p>
-            
-            <p>Item 2 John Doe</p>
-              
-            <div><footer>
-          <p>
-            Contact us at
-            <a href="mailto:support@swiftmailer.com">support@swiftmailer.com</a>
-          </p>
-          <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
-        </footer>
-        </div>
-          </body>
-        </html>
-        "
-      `);
+    it("throws an error if the loop variable is not an array", async () => {
+      const template = "<p *for='item of items'>{{item}}</p>";
+      const data = { items: "not an array" };
+      await expect(parser.render(template, data)).rejects.toEqual(
+        new TypeError(`Expected array for *for="item of items", got string`)
+      );
     });
 
-    it("renders multiple css files correctly", async () => {
+    it("correctly renders multiple css files", async () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
       const css = ["styles.css", "other.css"];
       const data = { name: "Alice" };
@@ -347,6 +351,140 @@ describe("TemplateParser", () => {
         }
         </style>
         <p>Hello, Alice!</p></body></html>"
+      `);
+    });
+
+    it("correctly renders the test.html template", async () => {
+      const data = {
+        user: {
+          name: "Jon Manga",
+          isMember: true,
+          roles: ["Role 1", "Role 2"],
+        },
+        city: "Oshikuku",
+        country: "Namibia",
+        isFavorite: true,
+        isFalse: false,
+        contributors: ["Contributor 1", "Contributor 2"],
+        projects: [
+          { name: "Project 1", roles: ["Role 1", "Role 2"] },
+          { name: "Project 2", roles: ["Role 3", "Role 4"] },
+        ],
+        groups: [["Group 1", "Group 2"]],
+        roles: ["Role 1", "Role 2"],
+        sites: ["Site 1", "Site 2"],
+        script: "script.js",
+      };
+      const result = await parser.render("test.html", data, {
+        css: ["styles.css"],
+      });
+      expect(result).toMatchInlineSnapshot(`
+        "<!DOCTYPE html>
+        <html>
+          <head>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+            <title>Test</title>
+            <link rel="stylesheet" href="styles.css" />
+            <script src="script.js"></script>
+            <!-- variables in attributes-->
+            <script src="script.js"></script>
+          </head>
+          <body>
+        <style>p {
+          color: blue;
+        }
+        </style>
+
+            <h1>This is a test template to test the templating engine</h1>
+            <h2>Include tag</h2>
+            <header>
+          <h2>SwiftMailer</h2>
+        </header>
+
+            <h2>Variables in text</h2>
+            <h2>Oshikuku is a small town in Namibia</h2>
+            <h2>Self closing tags</h2>
+            <img src="image.png" />
+            <br />
+            <div />
+            <h2>For loop</h2>
+            <h2>
+              For loop with variables in control tag attribute, if nested in a loop
+            </h2>
+            <ul>
+              <li class="red" id="Site 1">
+                Site 1
+                <span class="blue">Site 1 Oshikuku</span>
+              </li><li class="red" id="Site 2">
+                Site 2
+                <span class="blue">Site 2 Oshikuku</span>
+              </li>
+            </ul>
+            <h2>Truthy if tag: to be rendered</h2>
+            <p>Town Oshikuku is my favorite town</p>
+            <h2>Falsy if tag: not to be rendered</h2>
+            
+            <h2>Include nested in an if tag: not to be rendered</h2>
+            
+            <h2>For loop with nested loop control tag</h2>
+            <div>
+              <div>Contributor 1</div>
+            </div><div>
+              <div>Contributor 2</div>
+            </div>
+            <h2>Object variable</h2>
+            <div>Jon Manga</div>
+            <h2>Object variable in a if tag</h2>
+            
+            <h2>Object variable in a for loop text</h2>
+            <ul>
+              <li>Project 1</li><li>Project 2</li>
+            </ul>
+            <h2>Loop from object property</h2>
+            <ul>
+              <li>Role 1</li><li>Role 2</li>
+            </ul>
+            <h2>Nested loop</h2>
+            <!-- <ul>
+              <li *for="project of projects">
+                <div *for="role of project.roles">{{role}}</div>
+              </li>
+            </ul> -->
+            <ul>
+              <li>
+                <div>Role 1</div><div>Role 2</div>
+              </li><li>
+                <div>Role 3</div><div>Role 4</div>
+              </li>
+            </ul>
+            <h2>Another nested loop</h2>
+            <ul>
+              <li>
+                <div>Group 1</div><div>Group 2</div>
+              </li>
+            </ul>
+            <h2>Loop nested inside an if tag</h2>
+            <ul>
+              <li>Project 1</li><li>Project 2</li>
+            </ul>
+            <h2>Loop nested inside an if tag with falsy condition</h2>
+            
+            <h2>Loop with an if tag</h2>
+            <div>Project 1</div><div>Project 2</div>
+            <h2>Nested include</h2>
+            <div>
+              <footer>
+          <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
+        </footer>
+
+            </div>
+          </body>
+        </html>
+        "
       `);
     });
   });
