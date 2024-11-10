@@ -1,7 +1,7 @@
 {
-  "name": "swiftmailer",
+  "name": "swiftmail",
   "version": "1.0.0",
-  "author": "Jonas Tomanga <celleb@mrcelleb.com>",
+  "author": "Jonas Tomanga",
   "description": "A package for sending authentication emails with support for NestJS and non-NestJS projects.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

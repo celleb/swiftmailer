@@ -1,6 +1,6 @@
-# SwiftMailer
+# SwiftMail
 
-SwiftMailer is a Node.js package for sending authentication emails, including welcome emails, password reset emails, and passwordless login emails. It supports both NestJS and non-NestJS projects, providing a NestJS module for easy integration.
+SwiftMail is a Node.js package for sending authentication emails, including welcome emails, password reset emails, and passwordless login emails. It supports both NestJS and non-NestJS projects, providing a NestJS module for easy integration.
 
 ## Features
 
@@ -13,7 +13,7 @@ SwiftMailer is a Node.js package for sending authentication emails, including we
 ## Installation
 
 ```bash
-npm install swiftmailer
+npm install swiftmail
 ```
 
 ## Usage
@@ -21,21 +21,21 @@ npm install swiftmailer
 ### Non-NestJS Projects
 
 ```javascript
-const { swiftmailer } = require("swiftmailer");
+const { swiftmail } = require("swiftmail");
 
-swiftmailer.sendWelcomeEmail("user@example.com", { name: "User" });
+swiftmail.sendWelcomeEmail("user@example.com", { name: "User" });
 ```
 
 ### NestJS Projects
 
-1. Import `SwiftMailerModule` in your module:
+1. Import `SwiftMailModule` in your module:
 
    ```typescript
    import { Module } from "@nestjs/common";
-   import { SwiftMailerModule } from "swiftmailer/nest";
+   import { SwiftMailModule } from "swiftmail/nest";
 
    @Module({
-     imports: [SwiftMailerModule],
+     imports: [SwiftMailModule],
    })
    export class AppModule {}
    ```
@@ -44,7 +44,7 @@ swiftmailer.sendWelcomeEmail("user@example.com", { name: "User" });
 
    ```typescript
    import { Injectable } from "@nestjs/common";
-   import { EmailService } from "swiftmailer";
+   import { EmailService } from "swiftmail";
 
    @Injectable()
    export class UserService {
@@ -70,7 +70,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Template Engine Documentation
 
-The SwiftMailer package includes a simple template engine to render HTML email templates. This engine supports variable interpolation, loops, and includes, allowing you to create dynamic and reusable email templates.
+The SwiftMail package includes a simple template engine to render HTML email templates. This engine supports variable interpolation, loops, and includes, allowing you to create dynamic and reusable email templates.
 
 ### Features
 

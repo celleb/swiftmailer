@@ -45,7 +45,7 @@ describe("TemplateParser", () => {
       const result = await parser.render(template, {});
       expect(result).toMatchInlineSnapshot(`
         "<div><p>Content</p><footer>
-          <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
+          <p>&copy; 2023 SwiftMail. All rights reserved.</p>
         </footer>
         </div>"
       `);
@@ -454,7 +454,7 @@ describe("TemplateParser", () => {
             <h1>This is a test template to test the templating engine</h1>
             <h2>Include tag</h2>
             <header>
-          <h2>SwiftMailer</h2>
+          <h2>SwiftMail</h2>
         </header>
 
             <h2>Variables in text</h2>
@@ -530,7 +530,7 @@ describe("TemplateParser", () => {
             <h2>Nested include</h2>
             <div>
               <footer>
-          <p>&copy; 2023 SwiftMailer. All rights reserved.</p>
+          <p>&copy; 2023 SwiftMail. All rights reserved.</p>
         </footer>
 
             </div>
@@ -547,7 +547,7 @@ describe("TemplateParser", () => {
         companyName: "Logic++",
         name: "Celleb",
         logo: "logo.png",
-        baseUri: "https://static.mrcelleb.com/swiftmailer/",
+        baseUri: "https://static.mrcelleb.com/swiftmail/",
       };
       const parser = new Templ();
       const result = await parser.render("email-confirmation.html", data);
@@ -557,7 +557,7 @@ describe("TemplateParser", () => {
           <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <base href="https://static.mrcelleb.com/swiftmailer/" />
+            <base href="https://static.mrcelleb.com/swiftmail/" />
             <title>Confirm your email address</title>
           </head>
           <body
@@ -658,7 +658,7 @@ describe("TemplateParser", () => {
                 >
                   
                   <span>
-                    <p style="margin: 0">powered by swiftmailer</p>
+                    <p style="margin: 0">powered by swiftmail</p>
                   </span>
                 </td>
               </tr>
