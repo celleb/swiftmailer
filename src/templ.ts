@@ -10,7 +10,7 @@ export class Templ {
   private voidElements: Set<string>;
   private uniqueIdCounter = 0;
 
-  private readonly ifPattern = /<(\w+)\s+\*if=['"]([\w.\_]+)['"][^>]*>/;
+  private readonly ifPattern = /<(\w+)\s+\*if=['"](!?[\w._]+)['"][^>]*>/;
   private readonly forPattern =
     /<(\w+)(?:\s+[^>]*?)?\s+\*for=['"]([\w]+)\s+of\s+([\w.]+)['"][^>]*>/;
 
@@ -274,9 +274,12 @@ export class Templ {
         );
       }
 
-      const value = this.getValueFromData(data, condition);
+      const negate = condition.startsWith("!");
+      const variableName = negate ? condition.slice(1) : condition;
+      const value = this.getValueFromData(data, variableName);
+      const shouldRender = negate ? !value : value;
 
-      if (!value) {
+      if (!shouldRender) {
         template =
           template.slice(0, ifMatch.index!) + template.slice(endTagIndex);
       } else {

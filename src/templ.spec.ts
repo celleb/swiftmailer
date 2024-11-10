@@ -315,6 +315,20 @@ describe("TemplateParser", () => {
       `);
     });
 
+    it("correctly renders conditionals with !", async () => {
+      const template = "<p *if='!isMember'>{{name}}</p>";
+      const data = { isMember: false, name: "Alice" };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<p>Alice</p>");
+    });
+
+    it("does not render if negation conditions is false", async () => {
+      const template = "<div><p *if='!isMember'>{{name}}</p></div>";
+      const data = { isMember: true, name: "Alice" };
+      const result = await parser.render(template, data);
+      expect(result).toEqual("<div></div>");
+    });
+
     it("throws an error if the loop variable is not an array", async () => {
       const template = "<p *for='item of items'>{{item}}</p>";
       const data = { items: "not an array" };
