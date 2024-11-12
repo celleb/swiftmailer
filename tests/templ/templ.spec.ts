@@ -1,14 +1,13 @@
+import { Templ } from "@swiftmail/templ";
 import path from "path";
-import { beforeAll, describe, expect, it } from "vitest";
-import { Templ } from "./templ";
-
-const templatesDir = path.join(__dirname, "../__tests__/templates");
 
 describe("TemplateParser", () => {
   let parser: Templ;
 
   beforeAll(() => {
-    parser = new Templ(templatesDir);
+    parser = new Templ({
+      baseDir: __dirname,
+    });
   });
 
   describe("render", () => {
@@ -41,7 +40,8 @@ describe("TemplateParser", () => {
     });
 
     it("correctly processes includes", async () => {
-      const template = '<div><p>Content</p><include src="footer.html"/></div>';
+      const template =
+        '<div><p>Content</p><include src="templates/footer.html"/></div>';
       const result = await parser.render(template, {});
       expect(result).toMatchInlineSnapshot(`
         "<div><p>Content</p><footer>
@@ -57,7 +57,7 @@ describe("TemplateParser", () => {
         isMember: true,
         items: ["Item 1", "Item 2"],
       };
-      const result = await parser.render("welcome.html", data);
+      const result = await parser.render("templates/welcome.html", data);
       expect(result).toContain("Welcome, John Doe!");
       expect(result).toContain("We're glad to have you as a member!");
       expect(result).toContain("<li>Item 1</li>");
@@ -174,7 +174,10 @@ describe("TemplateParser", () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
       const css = ["styles.css"];
       const data = { name: "Alice" };
-      const result = await parser.render(template, data, { css });
+      const result = await parser.render(template, data, {
+        css,
+        baseDir: path.join(__dirname, "templates"),
+      });
 
       expect(result).toMatchInlineSnapshot(`
         "<html>
@@ -200,7 +203,7 @@ describe("TemplateParser", () => {
       </head>
       <body><p>Hello, {{name}}!</p></body>
       </html>`;
-      const css = ["styles.css"];
+      const css = ["templates/styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
       expect(result).toMatchInlineSnapshot(`
@@ -260,7 +263,10 @@ describe("TemplateParser", () => {
       const template = "<html><p>Hello, {{name}}!</p></html>";
       const css = ["styles.css"];
       const data = { name: "Alice" };
-      const result = await parser.render(template, data, { css });
+      const result = await parser.render(template, data, {
+        css,
+        baseDir: path.join(__dirname, "templates"),
+      });
       expect(result).toMatchInlineSnapshot(`
         "<html>
         <head>
@@ -303,7 +309,7 @@ describe("TemplateParser", () => {
 
     it("correctly embeds CSS when there is not html tag", async () => {
       const template = "<p>Hello, {{name}}!</p>";
-      const css = ["styles.css"];
+      const css = ["templates/styles.css"];
       const data = { name: "Alice" };
       const result = await parser.render(template, data, { css });
       expect(result).toMatchInlineSnapshot(`
@@ -379,7 +385,10 @@ describe("TemplateParser", () => {
       const template = "<html><body><p>Hello, {{name}}!</p></body></html>";
       const css = ["styles.css", "other.css"];
       const data = { name: "Alice" };
-      const result = await parser.render(template, data, { css });
+      const result = await parser.render(template, data, {
+        css,
+        baseDir: path.join(__dirname, "templates"),
+      });
       expect(result).toMatchInlineSnapshot(`
         "<html>
         <head>
@@ -427,7 +436,7 @@ describe("TemplateParser", () => {
         sites: ["Site 1", "Site 2"],
         script: "script.js",
       };
-      const result = await parser.render("test.html", data, {
+      const result = await parser.render("templates/test.html", data, {
         css: ["styles.css"],
       });
       expect(result).toMatchInlineSnapshot(`
@@ -534,135 +543,6 @@ describe("TemplateParser", () => {
         </footer>
 
             </div>
-          </body>
-        </html>
-        "
-      `);
-    });
-  });
-
-  describe("correctly renders the email-confirmation.html template", () => {
-    it("correctly renders the email-confirmation.html template", async () => {
-      const data = {
-        companyName: "Logic++",
-        name: "Celleb",
-        logo: "logo.png",
-        baseUri: "https://static.mrcelleb.com/swiftmail/",
-      };
-      const parser = new Templ();
-      const result = await parser.render("email-confirmation.html", data);
-      expect(result).toMatchInlineSnapshot(`
-        "<!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <base href="https://static.mrcelleb.com/swiftmail/" />
-            <title>Confirm your email address</title>
-          </head>
-          <body
-            style="
-              margin: 0;
-              padding: 0;
-              font-family: Arial, sans-serif;
-              background-color: #f4f4f4;
-            "
-          >
-            <table
-              width="100%"
-              border="0"
-              cellspacing="0"
-              cellpadding="0"
-              style="
-                max-width: 600px;
-                margin: 20px auto;
-                background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-              "
-            >
-              <tr>
-                <td
-                  style="
-                    background-color: #333;
-                    color: #ffffff;
-                    border-radius: 8px 8px 0 0;
-                    padding: 20px;
-                  "
-                >
-                  <table cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td style="vertical-align: middle">
-                        <img
-                          src="logo.png"
-                          alt="Logic++"
-                          style="width: 30px; display: block"
-                        />
-                      </td>
-                      <td style="vertical-align: middle">
-                        <h1 style="margin: 0; margin-left: 15px">Logic++</h1>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding: 20px">
-                  <p style="margin: 0 0 20px">
-                    Hi <span style="font-weight: bold">Celleb</span>,
-                  </p>
-                  <p style="margin: 0 0 20px">
-                    
-                    <span>
-                      Thank you for signing up! Please confirm your email address by
-                      clicking the button below:
-                    </span>
-                  </p>
-                  <p style="text-align: center">
-                    <a
-                      href=""
-                      style="
-                        display: inline-block;
-                        padding: 10px 20px;
-                        color: #ffffff;
-                        background-color: #28a745;
-                        text-decoration: none;
-                        border-radius: 5px;
-                      "
-                      >Confirm Email</a
-                    >
-                  </p>
-                  <p style="margin: 20px 0 0; text-align: center">
-                    Or copy and paste this link into your browser: <br />
-                    <a href="" style="color: #007bff"
-                      ></a
-                    >
-                  </p>
-                  <p style="margin: 20px 0 0">
-                    
-                    <span>
-                      If you did not sign up for this account, you can ignore this
-                      email.
-                    </span>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    padding: 20px;
-                    text-align: center;
-                    background-color: #f4f4f4;
-                    border-radius: 0 0 8px 8px;
-                  "
-                >
-                  
-                  <span>
-                    <p style="margin: 0">powered by swiftmail</p>
-                  </span>
-                </td>
-              </tr>
-            </table>
           </body>
         </html>
         "

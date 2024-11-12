@@ -1,0 +1,21 @@
+{
+  "name": "@swiftmail/logger",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "types": "./src/logger.ts",
+      "default": "./dist/logger.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/logger.ts --clean --format cjs,esm --dts",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vitest": "^2.1.4",
+    "tsup": "^8.3.5"
+  },
+  "dependencies": {}
+}

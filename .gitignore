@@ -29,4 +29,5 @@ html-dist/
 # Miscellaneous
 *.swp
 *.bak
-*.tmp 
+*.tmp
+.turbo

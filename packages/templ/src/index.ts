@@ -1,26 +1,26 @@
+import { Logger } from "@swiftmail/logger";
 import { promises as fs } from "fs";
 import path from "path";
-
 export type TemplRenderOptions = {
   css?: string[];
+  baseDir?: string;
+};
+
+export type TemplOptions = {
+  baseDir?: string;
 };
 
 export class Templ {
-  private templatesDir = path.join(__dirname, "./templates");
   private voidElements: Set<string>;
   private uniqueIdCounter = 0;
+  private logger = new Logger("templ");
 
   private readonly ifPattern =
     /<(\w+)(?:\s+[^>]*?)?\s+\*if=['"](!?[\w._]+)['"][^>]*>/;
   private readonly forPattern =
     /<(\w+)(?:\s+[^>]*?)?\s+\*for=['"]([\w]+)\s+of\s+([\w.]+)['"][^>]*>/;
 
-  private readonly whileTimeoutRuns = 100000;
-
-  constructor(templatesDir?: string) {
-    if (templatesDir) {
-      this.templatesDir = templatesDir;
-    }
+  constructor({ baseDir }: TemplOptions = {}) {
     this.voidElements = new Set([
       "area",
       "base",
@@ -37,18 +37,29 @@ export class Templ {
       "track",
       "wbr",
     ]);
+
+    this.baseDir = baseDir;
+  }
+
+  private baseDir?: string;
+
+  get dir(): string {
+    return this.baseDir ?? process.cwd();
   }
 
   async render<T = any>(
     template: string,
     data: T,
-    { css = [] }: TemplRenderOptions = {}
+    { css = [], baseDir = this.dir }: TemplRenderOptions = {}
   ): Promise<string> {
     this.uniqueIdCounter = 0;
     let templateContent: string;
-    if (template.endsWith(".html")) {
-      const templatePath = path.join(this.templatesDir, template);
+    const isHtml = template.endsWith(".html");
+    const templatePath = path.join(baseDir, template);
+    let fileDir = baseDir;
+    if (isHtml) {
       templateContent = await this.loadFile(templatePath);
+      fileDir = path.dirname(templatePath);
     } else {
       templateContent = template;
     }
@@ -60,7 +71,10 @@ export class Templ {
       throw new Error("Invalid HTML content before rendering");
     }
 
-    let processedTemplate = await this.processIncludes(placeholderTemplate);
+    let processedTemplate = await this.processIncludes(
+      placeholderTemplate,
+      fileDir
+    );
     const { html: loopedTemplate, expandedVariables } = this.processLoops(
       processedTemplate,
       data
@@ -73,8 +87,7 @@ export class Templ {
     let html = this.renderVariables(processedTemplate, variables);
 
     for (const cssFile of css.reverse()) {
-      const cssPath = path.join(this.templatesDir, cssFile);
-      const cssContent = await this.loadFile(cssPath);
+      const cssContent = await this.loadFile(path.join(fileDir, cssFile));
       html = this.embedCSS(html, cssContent);
     }
 
@@ -146,21 +159,26 @@ export class Templ {
 
   private async loadFile(filePath: string): Promise<string> {
     try {
+      this.logger.info(`Loading file ${filePath}`);
       return await fs.readFile(filePath, "utf-8");
     } catch (error) {
       throw new Error(`Failed to load file ${filePath}`);
     }
   }
 
-  private async processIncludes(template: string): Promise<string> {
+  private async processIncludes(
+    template: string,
+    fileDir: string
+  ): Promise<string> {
     const includePattern = /<include\s+src=['"]([^'"]+)['"]\s*\/>/g;
     const matches = Array.from(template.matchAll(includePattern));
     let result = template;
 
     for (const match of matches) {
       const includePath = match[1].trim();
-      const includeFilePath = path.join(this.templatesDir, includePath);
-      const includeContent = await this.loadFile(includeFilePath);
+      const includeContent = await this.loadFile(
+        path.join(fileDir, includePath)
+      );
       result = result.replace(match[0], includeContent);
     }
 

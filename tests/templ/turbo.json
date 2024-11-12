@@ -1,0 +1,9 @@
+{
+  "extends": ["//"],
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "test": {
+      "dependsOn": ["^@swiftmail/templ#build"]
+    }
+  }
+}
