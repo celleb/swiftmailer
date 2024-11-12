@@ -19,12 +19,14 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@swiftmail/templ": "workspace:*"
+    "@swiftmail/logger": "workspace:*",
+    "@swiftmail/templ": "workspace:*",
+    "nodemailer": "6.9.16"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
+    "@types/node": "catalog:",
     "@types/nodemailer": "^6.4.16",
-    "tsup": "^8.3.5",
-    "typescript": "^4.7.4"
+    "tsup": "catalog:",
+    "typescript": "catalog:"
   }
 }

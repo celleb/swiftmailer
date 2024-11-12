@@ -9,6 +9,17 @@ type SwiftMailOptions = SMTPTransport.Options & {
   url?: string;
 };
 
+type SwiftConfirmationEmail = {
+  name?: string;
+  company?: string;
+  intro?: string;
+  confirmationLink: string;
+  footer?: string;
+  note?: string;
+};
+
+type SwiftMailSendOptions = Partial<Parameters<SwiftMail["sendMail"]>[0]>;
+
 export interface SwiftMail<T extends Transport<unknown> = SMTPTransport>
   extends Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options> {}
 export class SwiftMail {
@@ -41,12 +52,19 @@ export class SwiftMail {
     const transporter = nodemailer.createTransport(transport);
     Object.assign(this, transporter);
 
-    this.parser = new Templ({ baseDir: this.config.templatesDir! });
+    this.parser = new Templ({ baseDir: this.config.templatesDir });
   }
 
-  async sendWelcomeEmail(to: string, data: any) {
-    const template = await this.parser.render("welcome.html", data);
-    await this.sendMail({ to, subject: "Welcome!", html: template });
+  async sendWelcomeEmail(
+    options: SwiftMailSendOptions,
+    data: SwiftConfirmationEmail
+  ) {
+    const html = await this.getConfirmationEmailHtml(data);
+    return this.sendMail({ ...options, html });
+  }
+
+  async getConfirmationEmailHtml(data: SwiftConfirmationEmail) {
+    return this.parser.render("email-confirmation.html", data);
   }
 
   async sendPasswordResetEmail(to: string, data: any) {
