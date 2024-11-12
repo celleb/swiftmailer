@@ -13,9 +13,9 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "typescript": "^4.7.4",
-    "vitest": "^2.1.4",
-    "tsup": "^8.3.5"
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "tsup": "catalog:"
   },
   "dependencies": {}
 }

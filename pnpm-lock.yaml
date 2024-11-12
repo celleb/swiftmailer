@@ -4,30 +4,45 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/node':
+      specifier: ^18.0.0
+      version: 18.19.64
+    tsup:
+      specifier: ^8.3.5
+      version: 8.3.5
+    typescript:
+      specifier: ^4.7.4
+      version: 4.9.5
+    vitest:
+      specifier: ^2.1.4
+      version: 2.1.4
+
 importers:
 
   .:
     devDependencies:
       '@types/node':
-        specifier: ^18.0.0
+        specifier: 'catalog:'
         version: 18.19.64
       turbo:
         specifier: ^2.2.3
         version: 2.2.3
       typescript:
-        specifier: ^4.7.4
+        specifier: 'catalog:'
         version: 4.9.5
 
   packages/logger:
     devDependencies:
       tsup:
-        specifier: ^8.3.5
+        specifier: 'catalog:'
         version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
       typescript:
-        specifier: ^4.7.4
+        specifier: 'catalog:'
         version: 4.9.5
       vitest:
-        specifier: ^2.1.4
+        specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)
 
   packages/mail:
@@ -35,9 +50,6 @@ importers:
       '@swiftmail/templ':
         specifier: workspace:*
         version: link:../templ
-      nodemailer:
-        specifier: ^6.7.2
-        version: 6.9.16
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
@@ -48,15 +60,9 @@ importers:
       tsup:
         specifier: ^8.3.5
         version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
-      turbo:
-        specifier: ^2.2.3
-        version: 2.2.3
       typescript:
         specifier: ^4.7.4
         version: 4.9.5
-      vitest:
-        specifier: ^2.1.4
-        version: 2.1.4(@types/node@18.19.64)
 
   packages/nest:
     dependencies:
@@ -65,16 +71,13 @@ importers:
         version: link:../mail
     devDependencies:
       '@types/node':
-        specifier: ^18.0.0
+        specifier: 'catalog:'
         version: 18.19.64
-      turbo:
-        specifier: ^2.2.3
-        version: 2.2.3
       typescript:
-        specifier: ^4.7.4
+        specifier: 'catalog:'
         version: 4.9.5
       vitest:
-        specifier: ^2.1.4
+        specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)
 
   packages/templ:
@@ -87,14 +90,11 @@ importers:
         version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
     devDependencies:
       '@types/node':
-        specifier: ^18.0.0
+        specifier: 'catalog:'
         version: 18.19.64
       typescript:
-        specifier: ^4.7.4
+        specifier: 'catalog:'
         version: 4.9.5
-      vitest:
-        specifier: ^2.1.4
-        version: 2.1.4(@types/node@18.19.64)
 
   tests/templ:
     dependencies:
@@ -103,7 +103,7 @@ importers:
         version: link:../../packages/templ
     devDependencies:
       vitest:
-        specifier: ^2.1.4
+        specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)
 
 packages:
@@ -729,10 +729,6 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  nodemailer@6.9.16:
-    resolution: {integrity: sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==}
-    engines: {node: '>=6.0.0'}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -1514,8 +1510,6 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.7: {}
-
-  nodemailer@6.9.16: {}
 
   object-assign@4.1.1: {}
 
