@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "author": "Jonas Tomanga",
   "description": "A package for sending authentication emails with support for NestJS and non-NestJS projects.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "turbo run build",
-    "build:templ": "turbo run build --filter=@swiftmail/templ",
     "start": "node dist/index.js",
-    "test": "turbo run test",
-    "test:templ": "turbo run test --filter=@swiftmail/templ-tests",
+    "build": "turbo run build",
     "dev": "turbo run dev",
-    "dev:templ": "turbo run dev --filter=@swiftmail/templ"
+    "test": "turbo run test",
+    "templ:build": "turbo run build --filter=@swiftmail/templ",
+    "templ:test": "turbo run test --filter=@swiftmail/templ-tests",
+    "templ:dev": "turbo run dev --filter=@swiftmail/templ",
+    "mail:build": "turbo run build --filter=@swiftmail/mail",
+    "mail:dev": "turbo run dev --filter=@swiftmail/mail"
   },
   "keywords": [
     "email",

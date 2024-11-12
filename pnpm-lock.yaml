@@ -22,7 +22,7 @@ importers:
     devDependencies:
       tsup:
         specifier: ^8.3.5
-        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)
+        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
       typescript:
         specifier: ^4.7.4
         version: 4.9.5
@@ -32,6 +32,9 @@ importers:
 
   packages/mail:
     dependencies:
+      '@swiftmail/templ':
+        specifier: workspace:*
+        version: link:../templ
       nodemailer:
         specifier: ^6.7.2
         version: 6.9.16
@@ -42,6 +45,9 @@ importers:
       '@types/nodemailer':
         specifier: ^6.4.16
         version: 6.4.16
+      tsup:
+        specifier: ^8.3.5
+        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
       turbo:
         specifier: ^2.2.3
         version: 2.2.3
@@ -78,7 +84,7 @@ importers:
         version: link:../logger
       tsup:
         specifier: ^8.3.5
-        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)
+        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
@@ -1035,6 +1041,11 @@ packages:
     resolution: {integrity: sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ==}
     engines: {node: '>=12'}
 
+  yaml@2.6.0:
+    resolution: {integrity: sha512-a6ae//JvKDEra2kdi1qzCyrJW/WZCgFi8ydDV+eXExl95t+5R+ijnqHJbz9tmMh8FUjx3iv2fCQ4dclAQlO2UQ==}
+    engines: {node: '>= 14'}
+    hasBin: true
+
 snapshots:
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -1527,11 +1538,12 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  postcss-load-config@6.0.1(postcss@8.4.48):
+  postcss-load-config@6.0.1(postcss@8.4.48)(yaml@2.6.0):
     dependencies:
       lilconfig: 3.1.2
     optionalDependencies:
       postcss: 8.4.48
+      yaml: 2.6.0
 
   postcss@8.4.48:
     dependencies:
@@ -1650,7 +1662,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.3.5(postcss@8.4.48)(typescript@4.9.5):
+  tsup@8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.24.0)
       cac: 6.7.14
@@ -1660,7 +1672,7 @@ snapshots:
       esbuild: 0.24.0
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(postcss@8.4.48)
+      postcss-load-config: 6.0.1(postcss@8.4.48)(yaml@2.6.0)
       resolve-from: 5.0.0
       rollup: 4.25.0
       source-map: 0.8.0-beta.0
@@ -1797,3 +1809,6 @@ snapshots:
       ansi-styles: 6.2.1
       string-width: 5.1.2
       strip-ansi: 7.1.0
+
+  yaml@2.6.0:
+    optional: true

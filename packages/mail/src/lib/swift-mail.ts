@@ -1,7 +1,7 @@
+import { Templ } from "@swiftmail/templ";
 import nodemailer, { Transport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
-import { Templ } from "./templ";
 
 type SwiftMailOptions = SMTPTransport.Options & {
   transport?: SMTPTransport;
@@ -41,7 +41,7 @@ export class SwiftMail {
     const transporter = nodemailer.createTransport(transport);
     Object.assign(this, transporter);
 
-    this.parser = new Templ(this.config.templatesDir!);
+    this.parser = new Templ({ baseDir: this.config.templatesDir! });
   }
 
   async sendWelcomeEmail(to: string, data: any) {
