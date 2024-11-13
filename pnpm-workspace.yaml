@@ -7,3 +7,5 @@ catalog:
   "@types/node": ^18.0.0
   vitest: ^2.1.4
   tsup: ^8.3.5
+  nodemailer: ^6.9.16
+  "@types/nodemailer": ^6.4.16

@@ -9,6 +9,12 @@ catalogs:
     '@types/node':
       specifier: ^18.0.0
       version: 18.19.64
+    '@types/nodemailer':
+      specifier: ^6.4.16
+      version: 6.4.16
+    nodemailer:
+      specifier: ^6.9.16
+      version: 6.9.16
     tsup:
       specifier: ^8.3.5
       version: 8.3.5
@@ -54,14 +60,14 @@ importers:
         specifier: workspace:*
         version: link:../templ
       nodemailer:
-        specifier: 6.9.16
+        specifier: 'catalog:'
         version: 6.9.16
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 18.19.64
       '@types/nodemailer':
-        specifier: ^6.4.16
+        specifier: 'catalog:'
         version: 6.4.16
       tsup:
         specifier: 'catalog:'
@@ -107,6 +113,12 @@ importers:
       '@swiftmail/mail':
         specifier: workspace:*
         version: link:../../packages/mail
+      '@types/nodemailer':
+        specifier: 'catalog:'
+        version: 6.4.16
+      nodemailer:
+        specifier: 'catalog:'
+        version: 6.9.16
       vitest:
         specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)

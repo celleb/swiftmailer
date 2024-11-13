@@ -6,7 +6,9 @@
   },
   "devDependencies": {
     "@swiftmail/mail": "workspace:*",
-    "vitest": "catalog:"
+    "nodemailer": "catalog:",
+    "vitest": "catalog:",
+    "@types/nodemailer": "catalog:"
   },
   "keywords": [
     "swiftmail",

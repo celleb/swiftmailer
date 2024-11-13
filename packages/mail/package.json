@@ -21,11 +21,11 @@
   "dependencies": {
     "@swiftmail/logger": "workspace:*",
     "@swiftmail/templ": "workspace:*",
-    "nodemailer": "6.9.16"
+    "nodemailer": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@types/nodemailer": "^6.4.16",
+    "@types/nodemailer": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
   }
