@@ -33,6 +33,7 @@ type SwiftPasswordlessLoginEmailData = SwiftMailBaseOptions & {
 };
 
 type SwiftWelcomeEmailData = SwiftMailBaseOptions & {
+  link: string;
   ctaLabel?: string;
   message?: string;
 };
