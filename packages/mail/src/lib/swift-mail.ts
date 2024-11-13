@@ -63,12 +63,14 @@ export class SwiftMail {
   private defaultTemplatesDir = path.join(__dirname, "../templates");
   public parser: Templ;
 
-  constructor(private config: SwiftMailOptions = {}) {
+  constructor(public config: SwiftMailOptions = {}) {
     let transport: SMTPTransport | SMTPTransport.Options | string;
     if (config.url) {
       transport = config.url;
     } else if (config.transport) {
       transport = config.transport;
+    } else if (process.env.SMTP_URL) {
+      transport = process.env.SMTP_URL;
     } else {
       transport = {
         host: process.env.EMAIL_HOST,
