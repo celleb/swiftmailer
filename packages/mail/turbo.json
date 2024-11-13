@@ -6,8 +6,7 @@
       "dependsOn": ["^build"]
     },
     "dev": {
-      "dependsOn": ["^dev"],
-      "persistent": true
+      "dependsOn": ["^build"]
     }
   }
 }

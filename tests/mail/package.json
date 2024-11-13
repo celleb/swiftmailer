@@ -2,7 +2,7 @@
   "name": "@swiftmail/mail-tests",
   "description": "Contains tests for the @swiftmail/mail package",
   "scripts": {
-    "test": "vitest --run"
+    "test": "vitest"
   },
   "devDependencies": {
     "@swiftmail/mail": "workspace:*",

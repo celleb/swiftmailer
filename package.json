@@ -12,7 +12,8 @@
     "templ:test": "turbo run test --filter=@swiftmail/templ-tests",
     "templ:dev": "turbo run dev --filter=@swiftmail/templ",
     "mail:build": "turbo run build --filter=@swiftmail/mail",
-    "mail:dev": "turbo run dev --filter=@swiftmail/mail"
+    "mail:dev": "turbo run dev --filter=@swiftmail/mail",
+    "mail:test": "turbo run test --filter=@swiftmail/mail-tests"
   },
   "keywords": [
     "email",

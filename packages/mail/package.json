@@ -6,9 +6,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsc --watch",
+    "build": "pnpm run cpt && tsc",
+    "dev": "pnpm run cpt && tsc --watch",
+    "cpt": "cp -r src/templates dist/templates",
     "test": "vitest run"
   },
   "keywords": [
