@@ -102,6 +102,15 @@ importers:
         specifier: 'catalog:'
         version: 4.9.5
 
+  tests/mail:
+    devDependencies:
+      '@swiftmail/mail':
+        specifier: workspace:*
+        version: link:../../packages/mail
+      vitest:
+        specifier: 'catalog:'
+        version: 2.1.4(@types/node@18.19.64)
+
   tests/templ:
     dependencies:
       '@swiftmail/templ':

@@ -1,0 +1,20 @@
+{
+  "name": "@swiftmail/mail-tests",
+  "description": "Contains tests for the @swiftmail/mail package",
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "@swiftmail/mail": "workspace:*",
+    "vitest": "catalog:"
+  },
+  "keywords": [
+    "swiftmail",
+    "mail",
+    "tests"
+  ],
+  "private": true,
+  "type": "module",
+  "author": "Jon Manga",
+  "license": "MIT"
+}
