@@ -40,5 +40,11 @@
     "@types/nodemailer": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
   }
 }
