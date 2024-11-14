@@ -3,7 +3,8 @@ import { Templ } from "@swiftmail/templ";
 import nodemailer, { Transport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
-type SwiftMailOptions = SMTPTransport.Options & {
+
+export type SwiftMailOptions = SMTPTransport.Options & {
   transport?: SMTPTransport;
   templatesDir?: string;
   url?: string;
@@ -20,39 +21,39 @@ type SwiftMailBaseOptions = {
   intro?: string;
 };
 
-type SwiftConfirmationEmailData = SwiftMailBaseOptions & {
+export type SwiftConfirmationEmailData = SwiftMailBaseOptions & {
   link: string;
 };
 
-type SwiftPasswordResetEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordResetEmailData = SwiftMailBaseOptions & {
   link: string;
   footer?: string;
 };
 
-type SwiftPasswordlessLoginEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordlessLoginEmailData = SwiftMailBaseOptions & {
   link: string;
 };
 
-type SwiftWelcomeEmailData = SwiftMailBaseOptions & {
+export type SwiftWelcomeEmailData = SwiftMailBaseOptions & {
   link: string;
   ctaLabel?: string;
   message?: string;
 };
 
-type SwiftAcceptInvitationEmailData = SwiftMailBaseOptions & {
+export type SwiftAcceptInvitationEmailData = SwiftMailBaseOptions & {
   link: string;
 };
 
-type SwiftPasswordInvitationEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordInvitationEmailData = SwiftMailBaseOptions & {
   link: string;
 };
 
-type SwiftWelcomeWithCredentialsEmailData = SwiftMailBaseOptions & {
+export type SwiftWelcomeWithCredentialsEmailData = SwiftMailBaseOptions & {
   link: string;
   credentials: { label: string; value: string }[];
 };
 
-type SwiftMailSendOptions = Partial<
+export type SwiftMailSendOptions = Partial<
   Omit<Parameters<SwiftMail["sendMail"]>[0], "html">
 > & {
   to: string;

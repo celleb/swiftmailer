@@ -6,17 +6,20 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "test": "vitest"
+    "build": "tsc -p tsconfig.prod.json",
+    "dev": "tsc -p tsconfig.dev.json --watch",
+    "test": "vitest run"
   },
   "keywords": [
     "email",
     "authentication",
+    "templ",
+    "swiftmail",
     "nestjs"
   ],
   "license": "MIT",
   "dependencies": {
+    "@nestjs/common": "10.4.7",
     "@swiftmail/mail": "workspace:*"
   },
   "devDependencies": {
