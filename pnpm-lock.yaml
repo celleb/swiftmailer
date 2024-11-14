@@ -72,9 +72,6 @@ importers:
       '@types/nodemailer':
         specifier: 'catalog:'
         version: 6.4.16
-      tsup:
-        specifier: 'catalog:'
-        version: 8.3.5(postcss@8.4.48)(typescript@4.9.5)(yaml@2.6.0)
       typescript:
         specifier: 'catalog:'
         version: 4.9.5
