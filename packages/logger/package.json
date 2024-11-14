@@ -1,17 +1,13 @@
 {
   "name": "@swiftmail/logger",
   "version": "1.0.0",
-  "types": "./dist/logger.d.ts",
-  "main": "./dist/logger.js",
-  "exports": {
-    ".": {
-      "import": "./dist/logger.mjs",
-      "require": "./dist/logger.js"
-    }
-  },
+  "author": "Jon Manga",
+  "license": "MIT",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "scripts": {
-    "build": "tsup src/**/*.ts !src/**/*.spec.ts --clean --format cjs,esm --dts",
-    "dev": "tsc --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "test": "vitest run"
   },
   "devDependencies": {
@@ -19,5 +15,11 @@
     "vitest": "catalog:",
     "tsup": "catalog:"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
+  }
 }

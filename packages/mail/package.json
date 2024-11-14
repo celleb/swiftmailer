@@ -1,7 +1,7 @@
 {
   "name": "@swiftmail/mail",
   "version": "0.0.1",
-  "author": "Jonas Tomanga",
+  "author": "Jon Manga",
   "description": "A package for composing and sending swift html emails, with a special focus on authentication emails.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,9 @@
     "url": "https://github.com/celleb/swiftmail/issues"
   },
   "homepage": "https://github.com/celleb/swiftmail#readme",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm run cpt && tsc ",
     "dev": "pnpm run cpt && tsc -p tsconfig.build.json --watch",

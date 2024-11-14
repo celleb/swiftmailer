@@ -33,6 +33,10 @@
     "packageManager": {
       "name": "pnpm",
       "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "onFail": "error"
     }
   }
 }
