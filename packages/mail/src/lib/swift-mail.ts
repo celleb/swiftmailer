@@ -78,6 +78,7 @@ export class SwiftMail {
     } else if (process.env.SMTP_URL) {
       this.$logger.info("using smtp url from environment");
       transport = process.env.SMTP_URL;
+      this.config.url = transport;
     } else {
       this.$logger.info("using smtp configs from environment");
       transport = {
