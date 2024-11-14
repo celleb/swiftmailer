@@ -6,9 +6,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "pnpm run cpt && tsc",
-    "dev": "pnpm run cpt && tsc --watch",
-    "cpt": "cp -r src/templates dist/templates",
+    "build": "pnpm run cpt && tsc ",
+    "dev": "pnpm run cpt && tsc -p tsconfig.build.json --watch",
+    "cpt": "mkdir -p dist/templates && cp -r src/templates/* dist/templates",
     "test": "vitest run"
   },
   "keywords": [
@@ -27,6 +27,7 @@
     "@types/node": "catalog:",
     "@types/nodemailer": "catalog:",
     "tsup": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
