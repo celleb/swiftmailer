@@ -1,6 +1,6 @@
 packages:
   - "packages/*"
-  - "tests/*"
+  - "e2e/*"
 
 catalog:
   typescript: ^4.7.4

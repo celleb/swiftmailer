@@ -42,6 +42,31 @@ importers:
         specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)
 
+  e2e/mail:
+    devDependencies:
+      '@swiftmail/mail':
+        specifier: workspace:*
+        version: link:../../packages/mail
+      '@types/nodemailer':
+        specifier: 'catalog:'
+        version: 6.4.16
+      nodemailer:
+        specifier: 'catalog:'
+        version: 6.9.16
+      vitest:
+        specifier: 'catalog:'
+        version: 2.1.4(@types/node@18.19.64)
+
+  e2e/templ:
+    dependencies:
+      '@swiftmail/templ':
+        specifier: workspace:*
+        version: link:../../packages/templ
+    devDependencies:
+      vitest:
+        specifier: 'catalog:'
+        version: 2.1.4(@types/node@18.19.64)
+
   packages/logger:
     devDependencies:
       tsup:
@@ -107,31 +132,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 4.9.5
-      vitest:
-        specifier: 'catalog:'
-        version: 2.1.4(@types/node@18.19.64)
-
-  tests/mail:
-    devDependencies:
-      '@swiftmail/mail':
-        specifier: workspace:*
-        version: link:../../packages/mail
-      '@types/nodemailer':
-        specifier: 'catalog:'
-        version: 6.4.16
-      nodemailer:
-        specifier: 'catalog:'
-        version: 6.9.16
-      vitest:
-        specifier: 'catalog:'
-        version: 2.1.4(@types/node@18.19.64)
-
-  tests/templ:
-    dependencies:
-      '@swiftmail/templ':
-        specifier: workspace:*
-        version: link:../../packages/templ
-    devDependencies:
       vitest:
         specifier: 'catalog:'
         version: 2.1.4(@types/node@18.19.64)
