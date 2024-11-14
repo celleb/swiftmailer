@@ -2,9 +2,18 @@
   "name": "@swiftmail/mail",
   "version": "0.0.1",
   "author": "Jonas Tomanga",
-  "description": "A package for sending emails swiftly with nodemailer.",
+  "description": "A package for composing and sending swift html emails, with a special focus on authentication emails.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celleb/swiftmail.git",
+    "directory": "packages/mail"
+  },
+  "bugs": {
+    "url": "https://github.com/celleb/swiftmail/issues"
+  },
+  "homepage": "https://github.com/celleb/swiftmail#readme",
   "scripts": {
     "build": "pnpm run cpt && tsc ",
     "dev": "pnpm run cpt && tsc -p tsconfig.build.json --watch",
@@ -14,8 +23,8 @@
   "keywords": [
     "email",
     "authentication",
-    "nodemailer",
-    "nestjs"
+    "html",
+    "send"
   ],
   "license": "MIT",
   "dependencies": {

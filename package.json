@@ -28,5 +28,11 @@
     "turbo": "^2.2.3",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
   }
 }
