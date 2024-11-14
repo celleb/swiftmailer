@@ -8,7 +8,8 @@
     "@swiftmail/mail": "workspace:*",
     "nodemailer": "catalog:",
     "vitest": "catalog:",
-    "@types/nodemailer": "catalog:"
+    "@types/nodemailer": "catalog:",
+    "@dotenvx/dotenvx": "catalog:"
   },
   "keywords": [
     "swiftmail",
