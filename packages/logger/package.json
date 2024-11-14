@@ -2,9 +2,27 @@
   "name": "@swiftmail/logger",
   "version": "1.0.0",
   "author": "Jon Manga",
+  "description": "A simple console logger class with colors.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celleb/swiftmail.git",
+    "directory": "packages/logger"
+  },
+  "bugs": {
+    "url": "https://github.com/celleb/swiftmail/issues"
+  },
+  "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/logger#readme",
   "license": "MIT",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "logger",
+    "console",
+    "colors"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch",
