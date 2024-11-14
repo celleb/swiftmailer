@@ -75,6 +75,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 4.9.5
+      vitest:
+        specifier: 'catalog:'
+        version: 2.1.4(@types/node@18.19.64)
 
   packages/nest:
     dependencies:
