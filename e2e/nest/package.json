@@ -1,0 +1,16 @@
+{
+  "name": "@swiftmail/nest-tests",
+  "private": true,
+  "dependencies": {
+    "@swiftmail/nest": "workspace:*"
+  },
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "vitest": "catalog:",
+    "@nestjs/testing": "catalog:",
+    "@dotenvx/dotenvx": "catalog:"
+  },
+  "type": "module"
+}

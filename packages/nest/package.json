@@ -26,6 +26,6 @@
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
-    "@nestjs/testing": "10.4.7"
+    "@nestjs/testing": "catalog:"
   }
 }

@@ -10,3 +10,4 @@ catalog:
   nodemailer: ^6.9.16
   "@types/nodemailer": ^6.4.16
   "@dotenvx/dotenvx": latest
+  "@nestjs/testing": ^10.4.7
