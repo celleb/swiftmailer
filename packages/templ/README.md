@@ -1,17 +1,22 @@
-# Template System Documentation
+# @swiftmail/templ
+
+<p align="center">
+  <img src="https://static.mrcelleb.com/swiftmail/logo.png" alt="SwiftMail" width="200">
+</p>
 
 ## Introduction
 
-The Template System is a versatile engine designed to render HTML templates with dynamic data. It supports variables, loops, conditionals, includes, and CSS embedding, ensuring compatibility across various email clients by handling CSS appropriately and sanitizing dynamic content to prevent HTML injection.
+A system for creating and rendering HTML templates with HTML, specifically tailored for emails. It supports variables, loops, conditionals, includes, and CSS embedding, ensuring compatibility across various email clients by handling CSS appropriately and sanitizing dynamic content to prevent HTML injection.
 
-## Features
+<p align="center">
+  <img src="https://static.mrcelleb.com/swiftmail/password-reset.png" alt="SwiftMail" >
+</p>
 
-- **Variables**: Dynamically replace placeholders with data.
-- **Loops**: Iterate over arrays to generate repeated content.
-- **Conditionals**: Render content based on boolean conditions.
-- **Includes**: Embed other HTML files into templates.
-- **CSS Embedding**: Embed CSS styles in both `<head>` and `<body>` for better email client compatibility.
-- **Sanitization**: Prevent HTML injection by sanitizing rendered data.
+## Installation
+
+```bash
+npm install @swiftmail/templ
+```
 
 ## Usage
 
@@ -36,14 +41,20 @@ const htmlContent = await parser.render("styles-embedding.html", data, {
 console.log(htmlContent);
 ```
 
+## Templ Options
+
+The `Templ` class constructor accepts the following options:
+
+- `baseDir`: The base directory for your templates.
+
 ## Template Syntax
 
 ### Variables
 
-Use `{{variableName}}` to output variable values:
+Use `{{var}}` to output variable values:
 
 ```html
-<p>Hello, {{name}}!</p>
+<p>Hello, {{var}}!</p>
 ```
 
 ### Loops
@@ -56,6 +67,18 @@ Use the `*for` attribute for iteration:
 </ul>
 ```
 
+You can also nest loops:
+
+```html
+<ul>
+  <div *for="list of items">
+    <ul>
+      <li *for="item of list">{{item.name}}</li>
+    </ul>
+  </div>
+</ul>
+```
+
 ### Conditionals
 
 Use the `*if` attribute for conditional rendering:
@@ -65,6 +88,8 @@ Use the `*if` attribute for conditional rendering:
   <p *if="isMember">Welcome back!</p>
 </div>
 ```
+
+`*if` only accepts boolean, truthy values, and falsy values. You can use the `!` operator to negate the condition, e.g. `<span *if="!isMember">Not a member</span>`.
 
 ### Includes
 
@@ -83,7 +108,7 @@ To embed CSS styles from a CSS file into your HTML templates, provide the CSS fi
 **Example**:
 
 ```html
-<!-- styles-embedding.html -->
+<!-- template.html -->
 <html>
   <head>
     <title>Welcome</title>
@@ -112,7 +137,7 @@ const data = {
   name: "Alice",
 };
 
-const htmlContent = await parser.render("styles-embedding.html", data, {
+const htmlContent = await parser.render("template.html", data, {
   css: ["styles.css"],
 });
 console.log(htmlContent);
@@ -141,28 +166,17 @@ console.log(htmlContent);
 </html>
 ```
 
-## Template Files
+## `Templ.render` Parameters
 
-Place your HTML templates in the `src/templates` directory. Ensure that included files are also located in this directory.
+| Parameter  | Type                 | Description                                             |
+| ---------- | -------------------- | ------------------------------------------------------- |
+| `template` | string               | The template to render, either a string or a file path. |
+| `data`     | object               | An object containing data to be used in the template.   |
+| `options`  | `TemplRenderOptions` | _(optional)_ An object containing additional options.   |
 
-### Example Template
+#### `TemplRenderOptions`
 
-**`welcome.html`**:
-
-```html
-<include src="header.html" />
-<h1>Welcome, {{name}}!</h1>
-<p>Thank you for joining us.</p>
-<ul>
-  <li *for="item of items">{{item}}</li>
-</ul>
-<include src="footer.html" />
-```
-
-## Additional Notes
-
-- **Error Handling**: Ensure that the specified CSS file exists. The current implementation throws an error if the CSS file fails to load.
-
-## References
-
-For more information on CSS support in email clients, refer to [Campaign Monitor's Ultimate Guide to CSS](https://www.campaignmonitor.com/css/style-element/style-in-body/).
+| Option    | Type     | Description                                                     |
+| --------- | -------- | --------------------------------------------------------------- |
+| `css`     | string[] | _(optional)_ An array of CSS file names to embed into the HTML. |
+| `baseDir` | string   | _(optional)_ The base directory for your templates.             |

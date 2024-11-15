@@ -123,6 +123,10 @@ const templ = new Templ({
 });
 ```
 
+## NestJS
+
+See the [@swiftmail/nest](https://github.com/celleb/swiftmail/tree/main/packages/nest#readme) package for more information on how to use SwiftMail with NestJS.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
