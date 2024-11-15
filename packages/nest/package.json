@@ -15,7 +15,9 @@
   },
   "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/nest#readme",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

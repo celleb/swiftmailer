@@ -1,168 +1,140 @@
-# Template System Documentation
+# @swiftmail/nest
 
-## Introduction
+<p align="center">
+  <img src="https://static.mrcelleb.com/swiftmail/logo.png" alt="SwiftMail" width="200">
+</p>
 
-The Template System is a versatile engine designed to render HTML templates with dynamic data. It supports variables, loops, conditionals, includes, and CSS embedding, ensuring compatibility across various email clients by handling CSS appropriately and sanitizing dynamic content to prevent HTML injection.
+## Overview
 
-## Features
+A NestJS module for sending authentication emails using `@swiftmail/mail`. `@swiftmail/mail` is a library for sending html emails, with a special focus on authentication emails.
+For more information about `@swiftmail/mail`, see the [`@swiftmail/mail`](https://github.com/celleb/swiftmail/tree/main/packages/mail#readme).
 
-- **Variables**: Dynamically replace placeholders with data.
-- **Loops**: Iterate over arrays to generate repeated content.
-- **Conditionals**: Render content based on boolean conditions.
-- **Includes**: Embed other HTML files into templates.
-- **CSS Embedding**: Embed CSS styles in both `<head>` and `<body>` for better email client compatibility.
-- **Sanitization**: Prevent HTML injection by sanitizing rendered data.
+## Installation
+
+```bash
+npm install @swiftmail/nest
+```
 
 ## Usage
 
-To render a template, use the `render` method provided by the `Templ` class. You can optionally specify a CSS file to embed styles into the HTML.
+### Importing the Module
 
-### Example
+In your `AppModule`, import the `SwiftMailModule` and configure it with your SMTP settings.
+By default, the module will use the environment variables `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, and `SMTP_PASS` to configure the SMTP connection. If `SMTP_URL` is set in the environment, it will be used instead. If `SMTP_FROM` is set, it will be used as the default sender email address.
 
 ```typescript
-import path from "path";
-import { Templ } from "./templ";
+import { Module } from "@nestjs/common";
+import { SwiftMailModule } from "@swiftmail/nest";
 
-const templatesDir = path.join(__dirname, "templates");
-const parser = new Templ(templatesDir);
-
-const data = {
-  name: "Alice",
-};
-
-const htmlContent = await parser.render("styles-embedding.html", data, {
-  css: ["styles.css"],
-});
-console.log(htmlContent);
+@Module({
+  imports: [
+    SwiftMailModule.forRoot({
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT || "587", 10),
+      secure: process.env.EMAIL_SECURE === "true",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      from: process.env.EMAIL_FROM,
+    }),
+  ],
+})
+export class AppModule {}
 ```
 
-## Template Syntax
+### Using the Service
 
-### Variables
+Inject the `SwiftMailService` into your controllers or services to send authentication or any other emails.
 
-Use `{{variableName}}` to output variable values:
+```typescript
+import { Controller, Post, Body } from "@nestjs/common";
+import { SwiftMailService } from "@swiftmail/nest";
 
-```html
-<p>Hello, {{name}}!</p>
-```
+@Controller("email")
+export class EmailController {
+  constructor(private readonly swiftMailService: SwiftMailService) {}
 
-### Loops
-
-Use the `*for` attribute for iteration:
-
-```html
-<ul>
-  <li *for="item of items">{{item.name}}</li>
-</ul>
-```
-
-### Conditionals
-
-Use the `*if` attribute for conditional rendering:
-
-```html
-<div>
-  <p *if="isMember">Welcome back!</p>
-</div>
-```
-
-### Includes
-
-Use the self-closing `<include/>` tag to embed other templates:
-
-```html
-<include src="header.html" />
-<p>Main content here</p>
-<include src="footer.html" />
-```
-
-## CSS Embedding
-
-To embed CSS styles from a CSS file into your HTML templates, provide the CSS file name as an option to the `render` method. The engine will include `<style>` tags in both `<head>` and `<body>` for better compatibility.
-
-**Example**:
-
-```html
-<!-- styles-embedding.html -->
-<html>
-  <head>
-    <title>Welcome</title>
-  </head>
-  <body>
-    <p class="red">This is red</p>
-  </body>
-</html>
-```
-
-```css
-/* styles.css */
-p.red {
-  color: red;
+  @Post("send")
+  async sendEmail(@Body() body: any) {
+    const { to, subject, html } = body;
+    return this.swiftMailService.sendWelcomeEmail(
+      { to, subject, html },
+      {
+        name: "Jon Manga",
+        link: "https://example.com",
+        companyName: "SwiftMail",
+        logo: "https://static.mrcelleb.com/swiftmail/logo.png",
+      }
+    );
+  }
 }
 ```
 
-```typescript
-import path from "path";
-import { Templ } from "./templ";
+Under the hood, `@swiftmail/mail` uses nodemailer to send emails, so you can use any of the methods like `sendMail`.
 
-const templatesDir = path.join(__dirname, "templates");
-const parser = new Templ(templatesDir);
+### SwiftMailService methods
 
-const data = {
-  name: "Alice",
-};
+#### `sendWelcomeEmail`
 
-const htmlContent = await parser.render("styles-embedding.html", data, {
-  css: ["styles.css"],
-});
-console.log(htmlContent);
-```
+Generates and sends a welcome email.
 
-**Rendered Output**:
+#### `getWelcomeEmailHtml`
 
-```html
-<html>
-  <head>
-    <title>Welcome</title>
-    <style>
-      p.red {
-        color: red;
-      }
-    </style>
-  </head>
-  <body>
-    <style>
-      p.red {
-        color: red;
-      }
-    </style>
-    <p class="red">This is red</p>
-  </body>
-</html>
-```
+Renders and returns the html for a welcome email.
 
-## Template Files
+#### `sendConfirmationEmail`
 
-Place your HTML templates in the `src/templates` directory. Ensure that included files are also located in this directory.
+Generates and sends a confirmation email.
 
-### Example Template
+#### `getConfirmationEmailHtml`
 
-**`welcome.html`**:
+Renders and returns the html for a confirmation email.
 
-```html
-<include src="header.html" />
-<h1>Welcome, {{name}}!</h1>
-<p>Thank you for joining us.</p>
-<ul>
-  <li *for="item of items">{{item}}</li>
-</ul>
-<include src="footer.html" />
-```
+#### `sendPasswordResetEmail`
 
-## Additional Notes
+Generates and sends a password reset email.
 
-- **Error Handling**: Ensure that the specified CSS file exists. The current implementation throws an error if the CSS file fails to load.
+#### `getPasswordResetEmailHtml`
 
-## References
+Renders and returns the html for a password reset email.
 
-For more information on CSS support in email clients, refer to [Campaign Monitor's Ultimate Guide to CSS](https://www.campaignmonitor.com/css/style-element/style-in-body/).
+#### `sendPasswordlessLoginEmail`
+
+Generates and sends a passwordless login email.
+
+#### `getPasswordlessLoginEmailHtml`
+
+Renders and returns the html for a passwordless login email.
+
+#### `sendAcceptInvitationEmail`
+
+Generates and sends an accept invitation email.
+
+#### `getAcceptInvitationEmailHtml`
+
+Renders and returns the html for an accept invitation email.
+
+#### `sendPasswordInvitationEmail`
+
+Generates and sends a password invitation email.
+
+#### `getPasswordInvitationEmailHtml`
+
+Renders and returns the html for a password invitation email.
+
+#### `sendWelcomeWithCredentialsEmail`
+
+Generates and sends a welcome with credentials email.
+
+#### `getWelcomeWithCredentialsEmailHtml`
+
+Renders and returns the html for a welcome with credentials email.
+
+#### `sendMail`
+
+Sends an email using nodemailer's `sendMail` method.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
