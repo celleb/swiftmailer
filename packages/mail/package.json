@@ -2,7 +2,7 @@
   "name": "@swiftmail/mail",
   "version": "0.0.1",
   "author": "Jon Manga",
-  "description": "Allow you to compose and send swift html emails, with a special focus on authentication emails.",
+  "description": "Allows you to compose and send swift html emails, with a special focus on authentication emails.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {

@@ -7,7 +7,7 @@
 ## Overview
 
 A NestJS module for sending authentication emails using `@swiftmail/mail`. `@swiftmail/mail` is a library for sending html emails, with a special focus on authentication emails.
-For more information about `@swiftmail/mail`, see the [`@swiftmail/mail`](https://github.com/celleb/swiftmail/tree/main/packages/mail#readme).
+For more information about `@swiftmail/mail`, see the [`@swiftmail/mail`](https://github.com/celleb/swiftmail#readme).
 
 ## Installation
 
@@ -62,7 +62,7 @@ export class EmailController {
       { to, subject, html },
       {
         name: "Jon Manga",
-        link: "https://example.com",
+        link: "https://swiftmail.io",
         companyName: "SwiftMail",
         logo: "https://static.mrcelleb.com/swiftmail/logo.png",
       }
