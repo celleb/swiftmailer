@@ -1,8 +1,8 @@
 import { DynamicModule } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import path from "path";
-import { SwiftPostModule } from "./swift-mail.module";
-import { SwiftPostService } from "./swift-mail.service";
+import { SwiftPostModule } from "./swift-post.module";
+import { SwiftPostService } from "./swift-post.service";
 
 describe("SwiftPostModule", () => {
   describe("forRoot", () => {

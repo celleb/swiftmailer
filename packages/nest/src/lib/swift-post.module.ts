@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { SwiftPostOptions } from "@swiftpost/mail";
-import { SwiftPostService } from "./swift-mail.service";
+import { SwiftPostService } from "./swift-post.service";
 @Module({})
 export class SwiftPostModule {
   static forRoot(options: SwiftPostOptions): DynamicModule {

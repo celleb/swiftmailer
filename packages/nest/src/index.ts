@@ -1,2 +1,2 @@
-export * from "./lib/swift-mail.module";
-export * from "./lib/swift-mail.service";
+export * from "./lib/swift-post.module";
+export * from "./lib/swift-post.service";

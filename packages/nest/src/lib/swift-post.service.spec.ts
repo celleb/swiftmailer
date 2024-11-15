@@ -1,4 +1,4 @@
-import { SwiftPostService } from "./swift-mail.service";
+import { SwiftPostService } from "./swift-post.service";
 
 describe("SwiftPostService", () => {
   let swiftPostService: SwiftPostService;

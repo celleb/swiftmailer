@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { SwiftPost } from "./swift-mail";
+import { SwiftPost } from "./swift-post";
 
 describe("SwiftPost", () => {
   describe("getConfirmationEmailHtml", () => {
