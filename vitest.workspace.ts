@@ -7,4 +7,5 @@ export default defineWorkspace([
   "./e2e/templ/vite.config.ts",
   "./packages/nest/vite.config.ts",
   "./e2e/nest/vite.config.ts",
+  "./packages/templ/vite.config.ts",
 ]);
