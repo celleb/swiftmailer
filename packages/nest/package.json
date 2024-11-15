@@ -1,10 +1,22 @@
 {
   "name": "@swiftmail/nest",
-  "version": "1.0.0",
-  "author": "Jonas Tomanga",
-  "description": "A nestjs module for sending authentication emails with swiftmail.",
+  "version": "0.0.1",
+  "author": "Jon Manga",
+  "description": "A nestjs module for @swiftmail/mail. Allows you to send emails with swiftmail.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celleb/swiftmail.git",
+    "directory": "packages/nest"
+  },
+  "bugs": {
+    "url": "https://github.com/celleb/swiftmail/issues"
+  },
+  "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/nest#readme",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch",
@@ -27,5 +39,11 @@
     "typescript": "catalog:",
     "vitest": "catalog:",
     "@nestjs/testing": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
   }
 }
