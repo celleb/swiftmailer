@@ -31,3 +31,5 @@ html-dist/
 *.bak
 *.tmp
 .turbo
+
+/packages/mail/README.md

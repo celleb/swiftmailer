@@ -1,6 +1,6 @@
 {
   "name": "@swiftpost/mail",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Jon Manga",
   "description": "Allows you to compose and send swift html emails, with a special focus on authentication emails.",
   "main": "dist/index.js",
@@ -21,9 +21,10 @@
     "build": "pnpm run cpt && tsc ",
     "dev": "pnpm run cpt && tsc -p tsconfig.build.json --watch",
     "cpt": "mkdir -p dist/templates && cp -r src/templates/* dist/templates",
+    "cpr": "cp ../../README.md ./README.md",
     "test": "vitest run",
-    "prepack": "pnpm build",
-    "prepublish": "pnpm build"
+    "prepack": "pnpm build && pnpm cpr",
+    "prepublish": "pnpm build && pnpm cpr"
   },
   "keywords": [
     "email",
