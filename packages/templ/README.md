@@ -180,3 +180,7 @@ console.log(htmlContent);
 | --------- | -------- | --------------------------------------------------------------- |
 | `css`     | string[] | _(optional)_ An array of CSS file names to embed into the HTML. |
 | `baseDir` | string   | _(optional)_ The base directory for your templates.             |
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
