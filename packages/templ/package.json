@@ -20,6 +20,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch",
+    "prepack": "pnpm build",
+    "prepublish": "pnpm build",
     "test": "vitest run"
   },
   "keywords": [
