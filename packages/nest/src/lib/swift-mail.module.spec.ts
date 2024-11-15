@@ -1,29 +1,29 @@
 import { DynamicModule } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import path from "path";
-import { SwiftMailModule } from "./swift-mail.module";
-import { SwiftMailService } from "./swift-mail.service";
+import { SwiftPostModule } from "./swift-mail.module";
+import { SwiftPostService } from "./swift-mail.service";
 
-describe("SwiftMailModule", () => {
+describe("SwiftPostModule", () => {
   describe("forRoot", () => {
-    it("returns a module with the SwiftMailService", async () => {
-      const module = await getModuleRef([SwiftMailModule.forRoot({})]);
-      const service = module.get(SwiftMailService);
-      expect(service).toBeInstanceOf(SwiftMailService);
+    it("returns a module with the SwiftPostService", async () => {
+      const module = await getModuleRef([SwiftPostModule.forRoot({})]);
+      const service = module.get(SwiftPostService);
+      expect(service).toBeInstanceOf(SwiftPostService);
       module.close();
     });
 
-    it("returns the same instance of SwiftMailService", async () => {
-      const module = await getModuleRef([SwiftMailModule.forRoot({})]);
-      const service = module.get(SwiftMailService);
-      const service2 = module.get(SwiftMailService);
+    it("returns the same instance of SwiftPostService", async () => {
+      const module = await getModuleRef([SwiftPostModule.forRoot({})]);
+      const service = module.get(SwiftPostService);
+      const service2 = module.get(SwiftPostService);
       expect(service).toEqual(service2);
       module.close();
     });
 
     it("uses config from params", async () => {
       const module = await getModuleRef([
-        SwiftMailModule.forRoot({
+        SwiftPostModule.forRoot({
           host: "smtp.ethereal.email",
           port: 587,
           secure: false,
@@ -34,7 +34,7 @@ describe("SwiftMailModule", () => {
           from: "yf3uhj7rt6zbczsb@ethereal.email",
         }),
       ]);
-      const service = module.get(SwiftMailService);
+      const service = module.get(SwiftPostService);
       expect(service.config).toEqual({
         host: "smtp.ethereal.email",
         port: 587,
@@ -49,32 +49,32 @@ describe("SwiftMailModule", () => {
   });
 
   describe("forFeature", () => {
-    it("returns a module with the SwiftMailService", async () => {
+    it("returns a module with the SwiftPostService", async () => {
       const module = await getModuleRef([
-        SwiftMailModule.forFeature({
+        SwiftPostModule.forFeature({
           templatesDir: path.join(__dirname, "templates"),
         }),
       ]);
-      const service = module.get(SwiftMailService);
-      expect(service).toBeInstanceOf(SwiftMailService);
+      const service = module.get(SwiftPostService);
+      expect(service).toBeInstanceOf(SwiftPostService);
       module.close();
     });
 
-    it("returns the same instance of SwiftMailService", async () => {
+    it("returns the same instance of SwiftPostService", async () => {
       const module = await getModuleRef([
-        SwiftMailModule.forFeature({
+        SwiftPostModule.forFeature({
           templatesDir: path.join(__dirname, "templates"),
         }),
       ]);
-      const service = module.get(SwiftMailService);
-      const service2 = module.get(SwiftMailService);
+      const service = module.get(SwiftPostService);
+      const service2 = module.get(SwiftPostService);
       expect(service).toEqual(service2);
       module.close();
     });
 
     it("uses config from params", async () => {
       const module = await getModuleRef([
-        SwiftMailModule.forFeature({
+        SwiftPostModule.forFeature({
           host: "smtp.ethereal.email",
           port: 587,
           secure: false,
@@ -85,7 +85,7 @@ describe("SwiftMailModule", () => {
           from: "yf3uhj7rt6zbczsb@ethereal.email",
         }),
       ]);
-      const service = module.get(SwiftMailService);
+      const service = module.get(SwiftPostService);
       expect(service.config).toEqual({
         host: "smtp.ethereal.email",
         port: 587,

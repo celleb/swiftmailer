@@ -1,19 +1,19 @@
 {
-  "name": "@swiftmail/nest",
+  "name": "@swiftpost/nest",
   "version": "0.0.1",
   "author": "Jon Manga",
-  "description": "A nestjs module for @swiftmail/mail. Allows you to send emails with swiftmail.",
+  "description": "A nestjs module for @swiftpost/mail. Allows you to send emails with swiftpost.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/celleb/swiftmail.git",
+    "url": "https://github.com/celleb/swiftpost.git",
     "directory": "packages/nest"
   },
   "bugs": {
-    "url": "https://github.com/celleb/swiftmail/issues"
+    "url": "https://github.com/celleb/swiftpost/issues"
   },
-  "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/nest#readme",
+  "homepage": "https://github.com/celleb/swiftpost/tree/main/packages/nest#readme",
   "files": [
     "dist",
     "README.md",
@@ -28,13 +28,13 @@
     "email",
     "authentication",
     "templ",
-    "swiftmail",
+    "swiftpost",
     "nestjs"
   ],
   "license": "MIT",
   "dependencies": {
     "@nestjs/common": "10.4.7",
-    "@swiftmail/mail": "workspace:*"
+    "@swiftpost/mail": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

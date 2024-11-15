@@ -1,36 +1,36 @@
 import dotenvx from "@dotenvx/dotenvx";
-import SwiftMail from "@swiftmail/mail";
+import SwiftPost from "@swiftpost/mail";
 dotenvx.config();
 
 const confirmationEmailReport = {
-  accepted: ["info@swiftmail.io"],
+  accepted: ["info@swiftpost.io"],
   ehlo: ["PIPELINING", "8BITMIME", "SMTPUTF8", "AUTH LOGIN PLAIN"],
   envelope: {
-    from: "test@swiftmail.io",
-    to: ["info@swiftmail.io"],
+    from: "test@swiftpost.io",
+    to: ["info@swiftpost.io"],
   },
   envelopeTime: expect.any(Number),
-  messageId: expect.stringMatching(/\w+@swiftmail.io>/),
+  messageId: expect.stringMatching(/\w+@swiftpost.io>/),
   messageSize: expect.any(Number),
   messageTime: expect.any(Number),
   rejected: [],
   response: expect.stringContaining("250 Accepted [STATUS=new MSGID="),
 };
-describe("SwiftMail", () => {
-  let swiftMail: SwiftMail;
+describe("SwiftPost", () => {
+  let swiftPost: SwiftPost;
 
   beforeEach(() => {
-    swiftMail = new SwiftMail();
+    swiftPost = new SwiftPost();
   });
   afterEach(() => {
-    swiftMail?.close();
+    swiftPost?.close();
   });
   it("successfully renders and sends a confirmation email", async () => {
-    const report = await swiftMail.sendConfirmationEmail(
+    const report = await swiftPost.sendConfirmationEmail(
       {
-        from: "test@swiftmail.io",
+        from: "test@swiftpost.io",
         subject: "Confirm your email address",
-        to: "info@swiftmail.io",
+        to: "info@swiftpost.io",
       },
       {
         companyName: "Test Company",
@@ -42,10 +42,10 @@ describe("SwiftMail", () => {
 
   describe("sendPasswordResetEmail", () => {
     it("successfully renders and sends a password reset email", async () => {
-      const report = await swiftMail.sendPasswordResetEmail(
+      const report = await swiftPost.sendPasswordResetEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -58,10 +58,10 @@ describe("SwiftMail", () => {
 
   describe("sendPasswordlessLoginEmail", () => {
     it("successfully renders and sends a passwordless login email", async () => {
-      const report = await swiftMail.sendPasswordlessLoginEmail(
+      const report = await swiftPost.sendPasswordlessLoginEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -74,10 +74,10 @@ describe("SwiftMail", () => {
 
   describe("sendWelcomeEmail", () => {
     it("successfully renders and sends a welcome email", async () => {
-      const report = await swiftMail.sendWelcomeEmail(
+      const report = await swiftPost.sendWelcomeEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -90,10 +90,10 @@ describe("SwiftMail", () => {
 
   describe("sendAcceptInvitationEmail", () => {
     it("successfully renders and sends an accept invitation email", async () => {
-      const report = await swiftMail.sendAcceptInvitationEmail(
+      const report = await swiftPost.sendAcceptInvitationEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -106,10 +106,10 @@ describe("SwiftMail", () => {
 
   describe("sendPasswordInvitationEmail", () => {
     it("successfully renders and sends a password invitation email", async () => {
-      const report = await swiftMail.sendPasswordInvitationEmail(
+      const report = await swiftPost.sendPasswordInvitationEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -122,10 +122,10 @@ describe("SwiftMail", () => {
 
   describe("sendWelcomeWithCredentialsEmail", () => {
     it("successfully renders and sends a welcome with credentials email", async () => {
-      const report = await swiftMail.sendWelcomeWithCredentialsEmail(
+      const report = await swiftPost.sendWelcomeWithCredentialsEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
@@ -142,17 +142,17 @@ describe("SwiftMail", () => {
 
   describe("getTestMessageUrl", () => {
     it("returns the test message url", async () => {
-      const info = await swiftMail.sendConfirmationEmail(
+      const info = await swiftPost.sendConfirmationEmail(
         {
-          from: "test@swiftmail.io",
-          to: "info@swiftmail.io",
+          from: "test@swiftpost.io",
+          to: "info@swiftpost.io",
         },
         {
           companyName: "Test Company",
           link: "https://example.com/confirm",
         }
       );
-      const url = await swiftMail.getTestMessageUrl(info);
+      const url = await swiftPost.getTestMessageUrl(info);
       expect(url).toMatch(/https:\/\/ethereal\.email\/message\/\w+/);
     });
   });

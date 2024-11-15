@@ -1,4 +1,4 @@
-import { Logger } from "@swiftmail/logger";
+import { Logger } from "@swiftpost/logger";
 import { promises as fs } from "fs";
 import path from "path";
 export type TemplRenderOptions = {

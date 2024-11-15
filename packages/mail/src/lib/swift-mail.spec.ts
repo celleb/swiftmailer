@@ -1,17 +1,17 @@
 import nodemailer from "nodemailer";
-import { SwiftMail } from "./swift-mail";
+import { SwiftPost } from "./swift-mail";
 
-describe("SwiftMail", () => {
+describe("SwiftPost", () => {
   describe("getConfirmationEmailHtml", () => {
     it("renders and returns the confirmation email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getConfirmationEmailHtml({
-        link: "https://swiftmail.io/confirm",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getConfirmationEmailHtml({
+        link: "https://swiftpost.io/confirm",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
         name: "Jon Manga",
       });
       expect(html).toMatchFileSnapshot(
@@ -22,16 +22,16 @@ describe("SwiftMail", () => {
 
   describe("getPasswordResetEmailHtml", () => {
     it("renders and returns the password reset email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getPasswordResetEmailHtml({
-        link: "https://swiftmail.io/reset-password",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getPasswordResetEmailHtml({
+        link: "https://swiftpost.io/reset-password",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
         name: "Jon Manga",
-        logo: "https://static.mrcelleb.com/swiftmail/logo.png",
+        logo: "https://static.mrcelleb.com/swiftpost/logo.png",
       });
       expect(html).toMatchFileSnapshot(
         "../__tests__/templates/password-reset.html"
@@ -41,18 +41,18 @@ describe("SwiftMail", () => {
 
   describe("getPasswordInvitationEmailHtml", () => {
     it("renders and returns the password invitation email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getPasswordInvitationEmailHtml({
-        link: "https://swiftmail.io/invitation",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
-        logo: "https://static.mrcelleb.com/swiftmail/logo.png",
+      const html = await swiftPost.getPasswordInvitationEmailHtml({
+        link: "https://swiftpost.io/invitation",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
+        logo: "https://static.mrcelleb.com/swiftpost/logo.png",
         name: "Jon Manga",
         note: "Please ignore this email if you did not request a password.",
-        intro: "You have been invited to join the amazing SwiftMail team.",
+        intro: "You have been invited to join the amazing SwiftPost team.",
       });
       expect(html).toMatchFileSnapshot(
         "../__tests__/templates/password-invitation.html"
@@ -62,14 +62,14 @@ describe("SwiftMail", () => {
 
   describe("getAcceptInvitationEmailHtml", () => {
     it("renders and returns the accept invitation email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getAcceptInvitationEmailHtml({
-        link: "https://swiftmail.io/accept-invitation",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getAcceptInvitationEmailHtml({
+        link: "https://swiftpost.io/accept-invitation",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
       });
       expect(html).toMatchFileSnapshot(
         "../__tests__/templates/accept-invitation.html"
@@ -79,14 +79,14 @@ describe("SwiftMail", () => {
 
   describe("getPasswordlessLoginEmailHtml", () => {
     it("renders and returns the passwordless login email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getPasswordlessLoginEmailHtml({
-        link: "https://swiftmail.io/passwordless-login",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getPasswordlessLoginEmailHtml({
+        link: "https://swiftpost.io/passwordless-login",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
         name: "Jon Manga",
       });
       expect(html).toMatchFileSnapshot(
@@ -97,16 +97,16 @@ describe("SwiftMail", () => {
 
   describe("getWelcomeEmailHtml", () => {
     it("renders and returns the welcome email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getWelcomeEmailHtml({
-        link: "https://swiftmail.io/welcome",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getWelcomeEmailHtml({
+        link: "https://swiftpost.io/welcome",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
         name: "Jon Manga",
-        intro: "Welcome to SwiftMail!",
+        intro: "Welcome to SwiftPost!",
       });
 
       expect(html).toMatchFileSnapshot(
@@ -117,18 +117,18 @@ describe("SwiftMail", () => {
 
   describe("getWelcomeWithCredentialsEmailHtml", () => {
     it("renders and returns the welcome with credentials email html", async () => {
-      const swiftMail = new SwiftMail({
+      const swiftPost = new SwiftPost({
         transport: {} as any,
       });
 
-      const html = await swiftMail.getWelcomeWithCredentialsEmailHtml({
-        link: "https://swiftmail.io/welcome",
-        companyName: "SwiftMail",
-        baseUri: "https://swiftmail.io",
+      const html = await swiftPost.getWelcomeWithCredentialsEmailHtml({
+        link: "https://swiftpost.io/welcome",
+        companyName: "SwiftPost",
+        baseUri: "https://swiftpost.io",
         name: "Jon Manga",
         footer: "Powered by me",
         credentials: [
-          { label: "Email", value: "jon@swiftmail.io" },
+          { label: "Email", value: "jon@swiftpost.io" },
           { label: "Password", value: "********" },
         ],
       });
@@ -142,11 +142,11 @@ describe("SwiftMail", () => {
     let restoreEnv: () => void;
     beforeEach(() => {
       restoreEnv = withEnv({
-        EMAIL_FROM: "test@swiftmail.io",
+        EMAIL_FROM: "test@swiftpost.io",
         EMAIL_HOST: "localhost",
         EMAIL_PORT: "587",
         EMAIL_SECURE: "false",
-        EMAIL_USER: "test@swiftmail.io",
+        EMAIL_USER: "test@swiftpost.io",
         EMAIL_PASS: "password",
       });
       vi.spyOn(nodemailer, "createTransport");
@@ -155,38 +155,38 @@ describe("SwiftMail", () => {
       restoreEnv();
     });
     it("calls nodemailer.createTransport with config from env", () => {
-      new SwiftMail();
+      new SwiftPost();
       expect(nodemailer.createTransport).toHaveBeenCalledWith({
         host: "localhost",
         port: 587,
         secure: false,
         auth: {
-          user: "test@swiftmail.io",
+          user: "test@swiftpost.io",
           pass: "password",
         },
-        from: "test@swiftmail.io",
+        from: "test@swiftpost.io",
         templatesDir: expect.stringContaining("/packages/mail/src/templates"),
       });
     });
 
     it("calls nodemailer.createTransport with config from arguments", () => {
-      new SwiftMail({
-        from: "test@swiftmail.io",
+      new SwiftPost({
+        from: "test@swiftpost.io",
         host: "localhost",
         port: 587,
         secure: false,
         auth: {
-          user: "test@swiftmail.io",
+          user: "test@swiftpost.io",
           pass: "password",
         },
       });
       expect(nodemailer.createTransport).toHaveBeenCalledWith({
-        from: "test@swiftmail.io",
+        from: "test@swiftpost.io",
         host: "localhost",
         port: 587,
         secure: false,
         auth: {
-          user: "test@swiftmail.io",
+          user: "test@swiftpost.io",
           pass: "password",
         },
         templatesDir: expect.stringContaining("/packages/mail/src/templates"),
@@ -194,26 +194,26 @@ describe("SwiftMail", () => {
     });
     it("calls nodemailer.createTransport with url from SMTP_URL env", () => {
       withEnv({
-        SMTP_URL: "smtp://test@swiftmail.io:password@localhost:587",
+        SMTP_URL: "smtp://test@swiftpost.io:password@localhost:587",
       });
-      new SwiftMail();
+      new SwiftPost();
       expect(nodemailer.createTransport).toHaveBeenCalledWith(
-        "smtp://test@swiftmail.io:password@localhost:587"
+        "smtp://test@swiftpost.io:password@localhost:587"
       );
     });
 
     it("calls nodemailer.createTransport with url from arguments", () => {
-      new SwiftMail({
-        url: "smtp://test@swiftmail.io:password@localhost:587",
+      new SwiftPost({
+        url: "smtp://test@swiftpost.io:password@localhost:587",
       });
       expect(nodemailer.createTransport).toHaveBeenCalledWith(
-        "smtp://test@swiftmail.io:password@localhost:587"
+        "smtp://test@swiftpost.io:password@localhost:587"
       );
     });
 
     it("calls nodemailer.createTransport with transport from arguments", () => {
       const transport = { sendMail: vi.fn() } as any;
-      new SwiftMail({
+      new SwiftPost({
         transport,
       });
       expect(nodemailer.createTransport).toHaveBeenCalledWith(transport);
@@ -222,20 +222,20 @@ describe("SwiftMail", () => {
 
   describe("sendConfirmationEmail", () => {
     it("generates and sends the confirmation email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendConfirmationEmail(
-        { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendConfirmationEmail(
+        { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
         {
-          companyName: "SwiftMail",
-          baseUri: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          baseUri: "https://swiftpost.io",
           name: "Jon Manga",
-          link: "https://swiftmail.io/confirm",
+          link: "https://swiftpost.io/confirm",
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "Confirm your email address",
         html: expect.any(String),
       });
@@ -244,20 +244,20 @@ describe("SwiftMail", () => {
 
   describe("sendPasswordResetEmail", () => {
     it("generates and sends the password reset email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendPasswordResetEmail(
-        { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendPasswordResetEmail(
+        { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
         {
-          companyName: "SwiftMail",
-          baseUri: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          baseUri: "https://swiftpost.io",
           name: "Jon Manga",
-          link: "https://swiftmail.io/reset-password",
+          link: "https://swiftpost.io/reset-password",
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "Password reset",
         html: expect.any(String),
       });
@@ -265,20 +265,20 @@ describe("SwiftMail", () => {
 
     describe("sendPasswordlessLoginEmail", () => {
       it("generates and sends the passwordless login email", async () => {
-        const swiftMail = new SwiftMail({});
-        vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-        await swiftMail.sendPasswordlessLoginEmail(
-          { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+        const swiftPost = new SwiftPost({});
+        vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+        await swiftPost.sendPasswordlessLoginEmail(
+          { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
           {
-            companyName: "SwiftMail",
-            baseUri: "https://swiftmail.io",
+            companyName: "SwiftPost",
+            baseUri: "https://swiftpost.io",
             name: "Jon Manga",
-            link: "https://swiftmail.io/passwordless-login",
+            link: "https://swiftpost.io/passwordless-login",
           }
         );
-        expect(swiftMail.sendMail).toHaveBeenCalledWith({
-          to: "jon@swiftmail.io",
-          from: "test@swiftmail.io",
+        expect(swiftPost.sendMail).toHaveBeenCalledWith({
+          to: "jon@swiftpost.io",
+          from: "test@swiftpost.io",
           subject: "Login request",
           html: expect.any(String),
         });
@@ -288,21 +288,21 @@ describe("SwiftMail", () => {
 
   describe("sendWelcomeEmail", () => {
     it("generates and sends the welcome email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendWelcomeEmail(
-        { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendWelcomeEmail(
+        { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
         {
-          companyName: "SwiftMail",
-          baseUri: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          baseUri: "https://swiftpost.io",
           name: "Jon Manga",
-          link: "https://swiftmail.io/welcome",
-          intro: "Welcome to SwiftMail!",
+          link: "https://swiftpost.io/welcome",
+          intro: "Welcome to SwiftPost!",
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "Welcome",
         html: expect.any(String),
       });
@@ -311,24 +311,24 @@ describe("SwiftMail", () => {
 
   describe("sendWelcomeWithCredentialsEmail", () => {
     it("generates and sends the welcome with credentials email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendWelcomeWithCredentialsEmail(
-        { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendWelcomeWithCredentialsEmail(
+        { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
         {
-          companyName: "SwiftMail",
-          baseUri: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          baseUri: "https://swiftpost.io",
           name: "Jon Manga",
-          link: "https://swiftmail.io/welcome",
+          link: "https://swiftpost.io/welcome",
           credentials: [
-            { label: "Email", value: "jon@swiftmail.io" },
+            { label: "Email", value: "jon@swiftpost.io" },
             { label: "Password", value: "********" },
           ],
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "Your credentials",
         html: expect.any(String),
       });
@@ -337,22 +337,22 @@ describe("SwiftMail", () => {
 
   describe("sendPasswordInvitationEmail", () => {
     it("generates and sends the password invitation email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendPasswordInvitationEmail(
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendPasswordInvitationEmail(
         {
-          to: "jon@swiftmail.io",
-          from: "test@swiftmail.io",
+          to: "jon@swiftpost.io",
+          from: "test@swiftpost.io",
           subject: "Here is your invitation",
         },
         {
-          companyName: "SwiftMail",
-          link: "https://swiftmail.io/invitation",
+          companyName: "SwiftPost",
+          link: "https://swiftpost.io/invitation",
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "Here is your invitation",
         html: expect.any(String),
       });
@@ -361,18 +361,18 @@ describe("SwiftMail", () => {
 
   describe("sendAcceptInvitationEmail", () => {
     it("generates and sends the accept invitation email", async () => {
-      const swiftMail = new SwiftMail({});
-      vi.spyOn(swiftMail, "sendMail").mockResolvedValue({} as any);
-      await swiftMail.sendAcceptInvitationEmail(
-        { to: "jon@swiftmail.io", from: "test@swiftmail.io" },
+      const swiftPost = new SwiftPost({});
+      vi.spyOn(swiftPost, "sendMail").mockResolvedValue({} as any);
+      await swiftPost.sendAcceptInvitationEmail(
+        { to: "jon@swiftpost.io", from: "test@swiftpost.io" },
         {
-          companyName: "SwiftMail",
-          link: "https://swiftmail.io/accept-invitation",
+          companyName: "SwiftPost",
+          link: "https://swiftpost.io/accept-invitation",
         }
       );
-      expect(swiftMail.sendMail).toHaveBeenCalledWith({
-        to: "jon@swiftmail.io",
-        from: "test@swiftmail.io",
+      expect(swiftPost.sendMail).toHaveBeenCalledWith({
+        to: "jon@swiftpost.io",
+        from: "test@swiftpost.io",
         subject: "You're invited to join us",
         html: expect.any(String),
       });

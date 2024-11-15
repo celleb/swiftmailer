@@ -1,18 +1,18 @@
 {
-  "name": "@swiftmail/mail-tests",
-  "description": "Contains tests for the @swiftmail/mail package",
+  "name": "@swiftpost/mail-tests",
+  "description": "Contains tests for the @swiftpost/mail package",
   "scripts": {
     "test": "vitest"
   },
   "devDependencies": {
-    "@swiftmail/mail": "workspace:*",
+    "@swiftpost/mail": "workspace:*",
     "nodemailer": "catalog:",
     "vitest": "catalog:",
     "@types/nodemailer": "catalog:",
     "@dotenvx/dotenvx": "catalog:"
   },
   "keywords": [
-    "swiftmail",
+    "swiftpost",
     "mail",
     "tests"
   ],

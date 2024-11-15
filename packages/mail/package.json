@@ -1,5 +1,5 @@
 {
-  "name": "@swiftmail/mail",
+  "name": "@swiftpost/mail",
   "version": "0.0.1",
   "author": "Jon Manga",
   "description": "Allows you to compose and send swift html emails, with a special focus on authentication emails.",
@@ -7,13 +7,13 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/celleb/swiftmail.git",
+    "url": "https://github.com/celleb/swiftpost.git",
     "directory": "packages/mail"
   },
   "bugs": {
-    "url": "https://github.com/celleb/swiftmail/issues"
+    "url": "https://github.com/celleb/swiftpost/issues"
   },
-  "homepage": "https://github.com/celleb/swiftmail#readme",
+  "homepage": "https://github.com/celleb/swiftpost#readme",
   "files": [
     "dist"
   ],
@@ -31,8 +31,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@swiftmail/logger": "workspace:*",
-    "@swiftmail/templ": "workspace:*",
+    "@swiftpost/logger": "workspace:*",
+    "@swiftpost/templ": "workspace:*",
     "nodemailer": "catalog:"
   },
   "devDependencies": {

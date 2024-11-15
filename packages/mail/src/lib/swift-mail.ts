@@ -1,17 +1,17 @@
-import { Logger } from "@swiftmail/logger";
-import { Templ } from "@swiftmail/templ";
+import { Logger } from "@swiftpost/logger";
+import { Templ } from "@swiftpost/templ";
 import nodemailer, { Transport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
 
-export type SwiftMailOptions = SMTPTransport.Options & {
+export type SwiftPostOptions = SMTPTransport.Options & {
   transport?: SMTPTransport;
   templatesDir?: string;
   url?: string;
   debug?: boolean;
 };
 
-type SwiftMailBaseOptions = {
+type SwiftPostBaseOptions = {
   companyName: string;
   logo?: string;
   baseUri?: string;
@@ -21,53 +21,53 @@ type SwiftMailBaseOptions = {
   intro?: string;
 };
 
-export type SwiftConfirmationEmailData = SwiftMailBaseOptions & {
+export type SwiftConfirmationEmailData = SwiftPostBaseOptions & {
   link: string;
 };
 
-export type SwiftPasswordResetEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordResetEmailData = SwiftPostBaseOptions & {
   link: string;
   footer?: string;
 };
 
-export type SwiftPasswordlessLoginEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordlessLoginEmailData = SwiftPostBaseOptions & {
   link: string;
 };
 
-export type SwiftWelcomeEmailData = SwiftMailBaseOptions & {
+export type SwiftWelcomeEmailData = SwiftPostBaseOptions & {
   link: string;
   ctaLabel?: string;
   message?: string;
 };
 
-export type SwiftAcceptInvitationEmailData = SwiftMailBaseOptions & {
+export type SwiftAcceptInvitationEmailData = SwiftPostBaseOptions & {
   link: string;
 };
 
-export type SwiftPasswordInvitationEmailData = SwiftMailBaseOptions & {
+export type SwiftPasswordInvitationEmailData = SwiftPostBaseOptions & {
   link: string;
 };
 
-export type SwiftWelcomeWithCredentialsEmailData = SwiftMailBaseOptions & {
+export type SwiftWelcomeWithCredentialsEmailData = SwiftPostBaseOptions & {
   link: string;
   credentials: { label: string; value: string }[];
 };
 
-export type SwiftMailSendOptions = Partial<
-  Omit<Parameters<SwiftMail["sendMail"]>[0], "html">
+export type SwiftPostSendOptions = Partial<
+  Omit<Parameters<SwiftPost["sendMail"]>[0], "html">
 > & {
   to: string;
 };
 
-export interface SwiftMail<T extends Transport<unknown> = SMTPTransport>
+export interface SwiftPost<T extends Transport<unknown> = SMTPTransport>
   extends Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options> {}
-export class SwiftMail {
+export class SwiftPost {
   private defaultTemplatesDir = path.join(__dirname, "../templates");
   private readonly $logger: Logger;
   public parser: Templ;
 
-  constructor(public config: SwiftMailOptions = {}) {
-    this.$logger = new Logger("SwiftMail", !!config.debug);
+  constructor(public config: SwiftPostOptions = {}) {
+    this.$logger = new Logger("SwiftPost", !!config.debug);
     let transport: SMTPTransport | SMTPTransport.Options | string;
     if (config.url) {
       this.$logger.info("using url from config");
@@ -122,7 +122,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Confirm your email address",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftConfirmationEmailData
   ) {
     const html = await this.getConfirmationEmailHtml(data);
@@ -144,7 +144,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Password reset",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftPasswordResetEmailData
   ) {
     const html = await this.getPasswordResetEmailHtml(data);
@@ -166,7 +166,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Login request",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftPasswordlessLoginEmailData
   ) {
     const html = await this.getPasswordlessLoginEmailHtml(data);
@@ -192,7 +192,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Welcome",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftWelcomeEmailData
   ) {
     const html = await this.getWelcomeEmailHtml(data);
@@ -214,7 +214,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "You're invited to join us",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftAcceptInvitationEmailData
   ) {
     const html = await this.getAcceptInvitationEmailHtml(data);
@@ -236,7 +236,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Set your password",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftPasswordInvitationEmailData
   ) {
     const html = await this.getPasswordInvitationEmailHtml(data);
@@ -258,7 +258,7 @@ export class SwiftMail {
       from = this.config.from as string,
       subject = "Your credentials",
       ...rest
-    }: SwiftMailSendOptions,
+    }: SwiftPostSendOptions,
     data: SwiftWelcomeWithCredentialsEmailData
   ) {
     const html = await this.getWelcomeWithCredentialsEmailHtml(data);

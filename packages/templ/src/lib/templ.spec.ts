@@ -44,7 +44,7 @@ describe("TemplateParser", () => {
       const result = await parser.render(template, {});
       expect(result).toMatchInlineSnapshot(`
         "<div><p>Content</p><footer>
-          <p>&copy; 2023 SwiftMail. All rights reserved.</p>
+          <p>&copy; 2023 SwiftPost. All rights reserved.</p>
         </footer>
         </div>"
       `);
@@ -460,7 +460,7 @@ describe("TemplateParser", () => {
             <h1>This is a test template to test the templating engine</h1>
             <h2>Include tag</h2>
             <header>
-          <h2>SwiftMail</h2>
+          <h2>SwiftPost</h2>
         </header>
 
             <h2>Variables in text</h2>
@@ -536,7 +536,7 @@ describe("TemplateParser", () => {
             <h2>Nested include</h2>
             <div>
               <footer>
-          <p>&copy; 2023 SwiftMail. All rights reserved.</p>
+          <p>&copy; 2023 SwiftPost. All rights reserved.</p>
         </footer>
 
             </div>

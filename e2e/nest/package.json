@@ -1,8 +1,8 @@
 {
-  "name": "@swiftmail/nest-tests",
+  "name": "@swiftpost/nest-tests",
   "private": true,
   "dependencies": {
-    "@swiftmail/nest": "workspace:*"
+    "@swiftpost/nest": "workspace:*"
   },
   "scripts": {
     "test": "vitest --run"

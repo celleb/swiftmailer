@@ -1,5 +1,5 @@
 {
-  "name": "swiftmail",
+  "name": "swiftpost",
   "version": "1.0.0",
   "author": "Jonas Tomanga",
   "description": "A package for sending authentication emails with support for NestJS and non-NestJS projects.",
@@ -8,12 +8,12 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test": "turbo run test",
-    "templ:build": "turbo run build --filter=@swiftmail/templ",
-    "templ:test": "turbo run test --filter=@swiftmail/templ-tests",
-    "templ:dev": "turbo run dev --filter=@swiftmail/templ",
-    "mail:build": "turbo run build --filter=@swiftmail/mail",
-    "mail:dev": "turbo run dev --filter=@swiftmail/mail",
-    "mail:test": "turbo run test --filter=@swiftmail/mail-tests"
+    "templ:build": "turbo run build --filter=@swiftpost/templ",
+    "templ:test": "turbo run test --filter=@swiftpost/templ-tests",
+    "templ:dev": "turbo run dev --filter=@swiftpost/templ",
+    "mail:build": "turbo run build --filter=@swiftpost/mail",
+    "mail:dev": "turbo run dev --filter=@swiftpost/mail",
+    "mail:test": "turbo run test --filter=@swiftpost/mail-tests"
   },
   "keywords": [
     "email",

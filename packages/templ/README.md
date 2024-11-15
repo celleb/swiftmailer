@@ -1,7 +1,7 @@
-# @swiftmail/templ
+# @swiftpost/templ
 
 <p align="center">
-  <img src="https://static.mrcelleb.com/swiftmail/logo.png" alt="SwiftMail" width="200">
+  <img src="https://static.mrcelleb.com/swiftpost/logo.png" alt="SwiftPost" width="200">
 </p>
 
 ## Introduction
@@ -9,13 +9,13 @@
 A system for creating and rendering HTML templates with HTML, specifically tailored for emails. It supports variables, loops, conditionals, includes, and CSS embedding, ensuring compatibility across various email clients by handling CSS appropriately and sanitizing dynamic content to prevent HTML injection.
 
 <p align="center">
-  <img src="https://static.mrcelleb.com/swiftmail/password-reset.png" alt="SwiftMail" >
+  <img src="https://static.mrcelleb.com/swiftpost/password-reset.png" alt="SwiftPost" >
 </p>
 
 ## Installation
 
 ```bash
-npm install @swiftmail/templ
+npm install @swiftpost/templ
 ```
 
 ## Usage

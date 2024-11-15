@@ -1,8 +1,8 @@
 {
-  "name": "@swiftmail/templ-tests",
+  "name": "@swiftpost/templ-tests",
   "private": true,
   "dependencies": {
-    "@swiftmail/templ": "workspace:*"
+    "@swiftpost/templ": "workspace:*"
   },
   "scripts": {
     "test": "vitest --run"

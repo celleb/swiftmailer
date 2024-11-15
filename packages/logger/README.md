@@ -1,17 +1,17 @@
-## @swiftmail/logger
+## @swiftpost/logger
 
 A simple console logger with colors.
 
 ### Installation
 
 ```bash
-pnpm add @swiftmail/logger
+pnpm add @swiftpost/logger
 ```
 
 ### Usage
 
 ```typescript
-import { Logger } from "@swiftmail/logger";
+import { Logger } from "@swiftpost/logger";
 
 const logger = new Logger();
 ```

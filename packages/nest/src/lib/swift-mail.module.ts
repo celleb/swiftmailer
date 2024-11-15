@@ -1,31 +1,31 @@
 import { DynamicModule, Module } from "@nestjs/common";
-import { SwiftMailOptions } from "@swiftmail/mail";
-import { SwiftMailService } from "./swift-mail.service";
+import { SwiftPostOptions } from "@swiftpost/mail";
+import { SwiftPostService } from "./swift-mail.service";
 @Module({})
-export class SwiftMailModule {
-  static forRoot(options: SwiftMailOptions): DynamicModule {
+export class SwiftPostModule {
+  static forRoot(options: SwiftPostOptions): DynamicModule {
     return {
-      module: SwiftMailModule,
+      module: SwiftPostModule,
       providers: [
         {
-          provide: SwiftMailService,
-          useValue: new SwiftMailService(options),
+          provide: SwiftPostService,
+          useValue: new SwiftPostService(options),
         },
       ],
-      exports: [SwiftMailService],
+      exports: [SwiftPostService],
     };
   }
 
-  static forFeature(options: SwiftMailOptions): DynamicModule {
+  static forFeature(options: SwiftPostOptions): DynamicModule {
     return {
-      module: SwiftMailModule,
+      module: SwiftPostModule,
       providers: [
         {
-          provide: SwiftMailService,
-          useFactory: () => new SwiftMailService(options),
+          provide: SwiftPostService,
+          useFactory: () => new SwiftPostService(options),
         },
       ],
-      exports: [SwiftMailService],
+      exports: [SwiftPostService],
     };
   }
 }

@@ -1,17 +1,17 @@
 {
-  "name": "@swiftmail/logger",
+  "name": "@swiftpost/logger",
   "version": "1.0.0",
   "author": "Jon Manga",
   "description": "A simple console logger class with colors.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/celleb/swiftmail.git",
+    "url": "https://github.com/celleb/swiftpost.git",
     "directory": "packages/logger"
   },
   "bugs": {
-    "url": "https://github.com/celleb/swiftmail/issues"
+    "url": "https://github.com/celleb/swiftpost/issues"
   },
-  "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/logger#readme",
+  "homepage": "https://github.com/celleb/swiftpost/tree/main/packages/logger#readme",
   "license": "MIT",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",

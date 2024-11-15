@@ -11,7 +11,7 @@ export default async function renderTemplates(
     companyName: "Logic++",
     name: "Celleb",
     logo: "logo.png",
-    baseUri: "https://static.mrcelleb.com/swiftmail/",
+    baseUri: "https://static.mrcelleb.com/swiftpost/",
   });
 
   if (!fs.existsSync(outDir)) {

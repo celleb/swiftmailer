@@ -1,5 +1,5 @@
 {
-  "name": "@swiftmail/templ",
+  "name": "@swiftpost/templ",
   "version": "0.0.1",
   "author": "Jon Manga",
   "description": "A system for creating and rendering HTML templates in HTML.",
@@ -10,13 +10,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/celleb/swiftmail.git",
+    "url": "https://github.com/celleb/swiftpost.git",
     "directory": "packages/templ"
   },
   "bugs": {
-    "url": "https://github.com/celleb/swiftmail/issues"
+    "url": "https://github.com/celleb/swiftpost/issues"
   },
-  "homepage": "https://github.com/celleb/swiftmail/tree/main/packages/templ#readme",
+  "homepage": "https://github.com/celleb/swiftpost/tree/main/packages/templ#readme",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch",
@@ -30,7 +30,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@swiftmail/logger": "workspace:*"
+    "@swiftpost/logger": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

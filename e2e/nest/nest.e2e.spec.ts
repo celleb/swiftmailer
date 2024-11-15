@@ -1,40 +1,40 @@
 import { config } from "@dotenvx/dotenvx";
 import { Test } from "@nestjs/testing";
-import { SwiftMailModule, SwiftMailService } from "@swiftmail/nest";
+import { SwiftPostModule, SwiftPostService } from "@swiftpost/nest";
 config();
 
-describe("@swiftmail/nest", () => {
-  let service: SwiftMailService;
+describe("@swiftpost/nest", () => {
+  let service: SwiftPostService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [SwiftMailModule.forFeature({})],
+      imports: [SwiftPostModule.forFeature({})],
     }).compile();
-    service = module.get(SwiftMailService);
+    service = module.get(SwiftPostService);
   });
 
-  describe("SwiftMailService", () => {
+  describe("SwiftPostService", () => {
     it("creates and a welcome email", async () => {
       vi.spyOn(service, "sendMail").mockResolvedValueOnce({} as any);
       const html = await service.getWelcomeEmailHtml({
         name: "John Doe",
-        companyName: "SwiftMail",
-        link: "https://swiftmail.io",
+        companyName: "SwiftPost",
+        link: "https://swiftpost.io",
       });
       await service.sendWelcomeEmail(
         {
           to: "test@example.com",
-          from: "jon.manga@swiftmail.io",
+          from: "jon.manga@swiftpost.io",
         },
         {
           name: "John Doe",
-          companyName: "SwiftMail",
-          link: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          link: "https://swiftpost.io",
         }
       );
       expect(service.sendMail).toHaveBeenCalledWith({
         to: "test@example.com",
-        from: "jon.manga@swiftmail.io",
+        from: "jon.manga@swiftpost.io",
         subject: "Welcome",
         html,
       });
@@ -42,22 +42,22 @@ describe("@swiftmail/nest", () => {
 
     it("creates and sends a welcome email", async () => {
       const report = await service.sendWelcomeEmail(
-        { to: "info@swiftmail.io", from: "jon.manga@swiftmail.io" },
+        { to: "info@swiftpost.io", from: "jon.manga@swiftpost.io" },
         {
           name: "John Doe",
-          companyName: "SwiftMail",
-          link: "https://swiftmail.io",
+          companyName: "SwiftPost",
+          link: "https://swiftpost.io",
         }
       );
       expect(report).toEqual({
-        accepted: ["info@swiftmail.io"],
+        accepted: ["info@swiftpost.io"],
         ehlo: ["PIPELINING", "8BITMIME", "SMTPUTF8", "AUTH LOGIN PLAIN"],
         envelope: {
-          from: "jon.manga@swiftmail.io",
-          to: ["info@swiftmail.io"],
+          from: "jon.manga@swiftpost.io",
+          to: ["info@swiftpost.io"],
         },
         envelopeTime: expect.any(Number),
-        messageId: expect.stringMatching(/\w+@swiftmail.io>/),
+        messageId: expect.stringMatching(/\w+@swiftpost.io>/),
         messageSize: expect.any(Number),
         messageTime: expect.any(Number),
         rejected: [],
