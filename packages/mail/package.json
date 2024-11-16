@@ -1,6 +1,6 @@
 {
   "name": "@swiftpost/mail",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Jon Manga",
   "description": "Allows you to compose and send swift html emails, with a special focus on authentication emails.",
   "main": "dist/index.js",
@@ -36,11 +36,11 @@
   "dependencies": {
     "@swiftpost/logger": "workspace:*",
     "@swiftpost/templ": "workspace:*",
-    "nodemailer": "catalog:"
+    "nodemailer": "catalog:",
+    "@types/nodemailer": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@types/nodemailer": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
