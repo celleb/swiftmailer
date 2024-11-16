@@ -64,5 +64,13 @@ describe("@swiftpost/nest", () => {
         response: expect.stringContaining("250 Accepted [STATUS=new MSGID="),
       });
     });
+
+    describe("sendMail", () => {
+      it("sends a mail", async () => {
+        vi.spyOn(service, "sendMail").mockResolvedValueOnce({} as any);
+        const report = await service.sendMail({});
+        expect(service.sendMail).toHaveBeenCalledWith({});
+      });
+    });
   });
 });
