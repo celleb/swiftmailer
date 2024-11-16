@@ -1,6 +1,6 @@
 {
   "name": "@swiftpost/nest",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Jon Manga",
   "description": "A nestjs module for @swiftpost/mail. Allows you to send emails with swiftpost.",
   "main": "dist/index.js",
